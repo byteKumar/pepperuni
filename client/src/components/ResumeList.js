@@ -348,9 +348,148 @@ const ResumeList = () => {
           </div>
         ) : (
           <>
-            <div style={{ marginBottom: "1.5rem", color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)", fontSize: "0.9375rem" }}>
-              Total Resumes: <strong style={{ color: isDark ? "var(--text-primary)" : "var(--text-primary)" }}>{resumes.length}</strong>
+            {/* Summary Section - Redesigned */}
+            {(() => {
+              // Get the most recent resume (previous resume)
+              const previousResume = resumes[0];
+              const previousScore = previousResume?.score || extractScoreFromText(previousResume?.resume) || "N/A";
+              
+              // Calculate highest score from all resumes
+              const scores = resumes.map(r => {
+                const score = r.score || extractScoreFromText(r.resume);
+                return score && score !== "N/A" ? parseInt(score) : 0;
+              });
+              const highestScore = scores.length > 0 ? Math.max(...scores) : "N/A";
+              
+              return (
+                <div style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))",
+                  gap: "clamp(1rem, 2vw, 1.5rem)",
+                  marginBottom: "clamp(2rem, 4vw, 3rem)",
+                }}>
+                  {/* Previous Resume Score Card */}
+                  {previousResume && previousScore !== "N/A" && (
+                    <div style={{
+                      backgroundColor: isDark ? "var(--bg-secondary)" : "#ffffff",
+                      borderRadius: "16px",
+                      padding: "clamp(1.5rem, 3vw, 2rem)",
+                      boxShadow: isDark ? "0 4px 20px rgba(0,0,0,0.3)" : "0 4px 20px rgba(0,0,0,0.08)",
+                      border: `1px solid ${isDark ? "var(--border-color)" : "#e0e0e0"}`,
+                      position: "relative",
+                      overflow: "hidden",
+                      transition: "all 0.3s ease",
+                    }}>
+                      <div style={{
+                        position: "absolute",
+                        top: "-20px",
+                        right: "-20px",
+                        width: "100px",
+                        height: "100px",
+                        borderRadius: "50%",
+                        background: `linear-gradient(135deg, ${getScoreColor(previousScore)}20, ${getScoreColor(previousScore)}05)`,
+                        opacity: 0.5,
+                      }} />
+                      <div style={{
+                        fontSize: "clamp(0.8125rem, 1.75vw, 0.875rem)",
+                        color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
+                        marginBottom: "0.75rem",
+                        fontWeight: "500",
+                        letterSpacing: "0.02em",
+                        textTransform: "uppercase",
+                      }}>
+                        Previous Resume
+                      </div>
+                      <div style={{
+                        fontSize: "clamp(1.5rem, 3.5vw, 2rem)",
+                        fontWeight: "700",
+                        color: getScoreColor(previousScore),
+                        marginBottom: "0.5rem",
+                        lineHeight: "1.2",
+                      }}>
+                        {previousScore}/100
+                      </div>
+                      <div style={{
+                        fontSize: "clamp(0.875rem, 1.75vw, 0.9375rem)",
+                        color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
+                        lineHeight: "1.5",
+                      }}>
+                        Your previous resume scored <strong style={{ color: getScoreColor(previousScore) }}>"{previousScore}"</strong>.
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Highest Score Card */}
+                  {highestScore !== "N/A" && highestScore > 0 && (
+                    <div style={{
+                      backgroundColor: isDark ? "var(--bg-secondary)" : "#ffffff",
+                      borderRadius: "16px",
+                      padding: "clamp(1.5rem, 3vw, 2rem)",
+                      boxShadow: isDark ? "0 4px 20px rgba(0,0,0,0.3)" : "0 4px 20px rgba(0,0,0,0.08)",
+                      border: `1px solid ${isDark ? "var(--border-color)" : "#e0e0e0"}`,
+                      position: "relative",
+                      overflow: "hidden",
+                      transition: "all 0.3s ease",
+                    }}>
+                      <div style={{
+                        position: "absolute",
+                        top: "-20px",
+                        right: "-20px",
+                        width: "100px",
+                        height: "100px",
+                        borderRadius: "50%",
+                        background: `linear-gradient(135deg, ${getScoreColor(highestScore.toString())}20, ${getScoreColor(highestScore.toString())}05)`,
+                        opacity: 0.5,
+                      }} />
+                      <div style={{
+                        fontSize: "clamp(0.8125rem, 1.75vw, 0.875rem)",
+                        color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
+                        marginBottom: "0.75rem",
+                        fontWeight: "500",
+                        letterSpacing: "0.02em",
+                        textTransform: "uppercase",
+                      }}>
+                        Best Performance
+                      </div>
+                      <div style={{
+                        fontSize: "clamp(1.5rem, 3.5vw, 2rem)",
+                        fontWeight: "700",
+                        color: getScoreColor(highestScore.toString()),
+                        marginBottom: "0.5rem",
+                        lineHeight: "1.2",
+                      }}>
+                        {highestScore}/100
+                      </div>
+                      <div style={{
+                        fontSize: "clamp(0.875rem, 1.75vw, 0.9375rem)",
+                        color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
+                        lineHeight: "1.5",
+                      }}>
+                        Your highest score over the last 5 uploads is <strong style={{ color: getScoreColor(highestScore.toString()) }}>"{highestScore}"</strong>.
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
+            
+            {/* Section Header */}
+            <div style={{
+              marginBottom: "clamp(1.5rem, 3vw, 2rem)",
+              paddingBottom: "1rem",
+              borderBottom: `2px solid ${isDark ? "var(--border-color)" : "#e0e0e0"}`,
+            }}>
+              <h2 style={{
+                fontSize: "clamp(1.25rem, 2.75vw, 1.5rem)",
+                fontWeight: "700",
+                color: isDark ? "var(--text-primary)" : "var(--text-primary)",
+                margin: 0,
+                letterSpacing: "-0.01em",
+              }}>
+                Track your last five resume uploads.
+              </h2>
             </div>
+            
             <div style={styles.resumeGrid}>
               {resumes.map((resume, index) => (
                 <div

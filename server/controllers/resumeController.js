@@ -93,6 +93,19 @@ exports.mainJob = async (req, res) => {
           created_date: moment().format("YYYY-MM-DD HH:mm:ss"),
         });
         await resume.save();
+        
+        // Keep only the last 5 resumes for this user
+        const userResumes = await Resume.find({ user_id })
+          .sort({ created_date: -1 })
+          .exec();
+        
+        if (userResumes.length > 5) {
+          // Delete resumes beyond the 5 most recent
+          const resumesToDelete = userResumes.slice(5);
+          const idsToDelete = resumesToDelete.map(r => r._id);
+          await Resume.deleteMany({ _id: { $in: idsToDelete } });
+          console.log(`Deleted ${resumesToDelete.length} old resume(s) for user ${user_id}`);
+        }
       } catch (dbError) {
         console.error("Error saving resume to database:", dbError);
         // Continue even if database save fails
@@ -148,6 +161,7 @@ exports.getUserResumes = async (req, res) => {
     console.log("Querying database for user_id:", user_id);
     const resumes = await Resume.find({ user_id })
       .sort({ created_date: -1 }) // Sort by newest first
+      .limit(5) // Limit to last 5 resumes
       .exec();
 
     console.log(`Found ${resumes.length} resumes for user ${user_id}`);
