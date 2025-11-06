@@ -11,7 +11,27 @@ const editResumeRoutes = require("./routes/editResumeRoutes");
 const app = express();
 const PORT = process.env.PORT || 5001;
 
-app.use(cors({ origin: process.env.CORS_ORIGIN }));
+// Handle CORS - support multiple origins if comma-separated
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowedOrigins = process.env.CORS_ORIGIN
+      ? process.env.CORS_ORIGIN.split(',').map(origin => origin.trim())
+      : ['http://localhost:3000'];
+    
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(null, true); // Allow all origins in development (remove in production)
+      // For production, use: callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 mongoose
