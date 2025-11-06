@@ -2,7 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
-const { mainJob } = require("../controllers/resumeController.js");
+const { mainJob, getUserResumes } = require("../controllers/resumeController.js");
 
 const router = express.Router();
 
@@ -42,5 +42,9 @@ const upload = multer({
 
 // Define the /api/main_job route
 router.post("/main_job", upload.single("file"), mainJob);
+
+// Define the route to get user resumes
+// Note: This route is at /api/resumes/user/:user_id to avoid conflict with /api/resumes/edit-resume
+router.get("/resumes/user/:user_id", getUserResumes);
 
 module.exports = router;

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { LayoutGrid, FileDown, User2, Settings, CloudIcon } from "lucide-react";
 import axios from "axios";
 
@@ -240,16 +240,16 @@ const ResumeUpload = () => {
       <aside style={styles.sidebar}>
         <div style={styles.logo}>PepperUni</div>
         <nav style={styles.nav}>
-          <a href="/" style={{ ...styles.navItem, ...styles.activeNavItem }}>
+          <Link to="/resumeupload" style={{ ...styles.navItem, ...styles.activeNavItem }}>
             <span style={{ fontSize: "1.25rem" }}>⊞</span>
             Home
-          </a>
-          <a style={styles.navItem}>
+          </Link>
+          <Link to="/resume" style={styles.navItem}>
             <span style={{ fontSize: "1.25rem" }}>
               <FileDown />
             </span>
             Resume
-          </a>
+          </Link>
           <a style={styles.navItem}>
             <span style={{ fontSize: "1.25rem" }}>
               <User2 />

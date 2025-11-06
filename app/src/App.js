@@ -8,6 +8,7 @@ import Login from "./components/Login";
 import Response from "./components/Response";
 import JobDetails from "./components/JobDetails";
 import ResumeUpload from "./components/ResumeUpload";
+import ResumeList from "./components/ResumeList";
 import "./App.css";
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         {/* <Route path="/rb" element={<RB />} /> */}
         <Route path="/response" element={<Response />} />
         <Route path="/JD" element={<JobDetails />} />
+        <Route path="/resume" element={<ResumeList />} />
       </Routes>
     </Router>
   );

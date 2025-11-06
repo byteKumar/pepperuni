@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { LayoutGrid, FileDown, User2, Settings, Download } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 
 const Response = () => {
   const [loading, setLoading] = useState(false);
@@ -130,18 +130,28 @@ const Response = () => {
       <aside style={styles.sidebar}>
         <div style={styles.logo}>PepperUni</div>
         <nav style={styles.nav}>
-          <a href="/" style={{ ...styles.navItem, ...styles.activeNavItem }}>
+          <Link to="/resumeupload" style={styles.navItem}>
             <LayoutGrid /> Home
-          </a>
-          <a href="/resume" style={styles.navItem}>
+          </Link>
+          <Link to="/resume" style={{ ...styles.navItem, ...styles.activeNavItem }}>
             <FileDown /> Resume
-          </a>
-          <a href="/profile" style={styles.navItem}>
+          </Link>
+          <div style={styles.navItem}>
             <User2 /> Profile
-          </a>
-          <a href="/settings" style={styles.navItem}>
+          </div>
+          <div style={styles.navItem}>
             <Settings /> Settings
-          </a>
+          </div>
+          <div
+            style={styles.navItem}
+            onClick={() => {
+              localStorage.removeItem("token");
+              localStorage.removeItem("user");
+              navigate("/login");
+            }}
+          >
+            Logout
+          </div>
         </nav>
       </aside>
       <main style={styles.main}>

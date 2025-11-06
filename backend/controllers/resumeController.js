@@ -102,3 +102,39 @@ exports.mainJob = async (req, res) => {
     });
   }
 };
+
+/**
+ * Get all resumes for a user
+ */
+exports.getUserResumes = async (req, res) => {
+  try {
+    const { user_id } = req.params;
+    
+    if (!user_id) {
+      return res.status(400).json({ 
+        status: "error",
+        message: "User ID is required" 
+      });
+    }
+
+    const resumes = await Resume.find({ user_id })
+      .sort({ created_date: -1 }) // Sort by newest first
+      .exec();
+
+    return res.status(200).json({
+      status: "success",
+      message: "Resumes fetched successfully",
+      data: {
+        resumes: resumes,
+        count: resumes.length,
+      },
+    });
+  } catch (err) {
+    console.error("Error fetching resumes:", err);
+    res.status(500).json({ 
+      status: "error",
+      message: "An error occurred while fetching resumes", 
+      error: err.message 
+    });
+  }
+};
