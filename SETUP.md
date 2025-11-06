@@ -13,9 +13,9 @@ This guide will help you set up and run the PepperUni application locally.
 
 ### 1. Backend Setup
 
-Navigate to the backend directory:
+Navigate to the server directory:
 ```bash
-cd backend
+cd server
 ```
 
 Install dependencies:
@@ -23,7 +23,7 @@ Install dependencies:
 npm install
 ```
 
-Create a `.env` file in the `backend` directory with the following variables:
+Create a `.env` file in the `server` directory with the following variables:
 ```env
 PORT=5001
 MONGODB_URI=your_mongodb_connection_string
@@ -36,9 +36,9 @@ CORS_ORIGIN=http://localhost:3000
 
 ### 2. Frontend Setup
 
-Navigate to the app directory:
+Navigate to the client directory:
 ```bash
-cd app
+cd client
 ```
 
 Install dependencies:
@@ -73,7 +73,7 @@ npm install
 
 #### Start Backend Server
 
-In the `backend` directory:
+In the `server` directory:
 ```bash
 npm start
 # or
@@ -84,9 +84,9 @@ The server should start on `http://localhost:5001`
 
 #### Start Frontend Development Server
 
-In a new terminal, navigate to the `app` directory:
+In a new terminal, navigate to the `client` directory:
 ```bash
-cd app
+cd client
 npm start
 ```
 
@@ -128,18 +128,18 @@ The frontend should start on `http://localhost:3000`
 ### Frontend Issues
 
 1. **Cannot Connect to Backend:**
-   - Ensure backend is running on port 5001
-   - Check `CORS_ORIGIN` in backend `.env`
-   - Verify API endpoints in components match backend routes
+   - Ensure server is running on port 5001
+   - Check `CORS_ORIGIN` in server `.env`
+   - Verify API endpoints in components match server routes
 
 2. **CORS Errors:**
-   - Make sure `CORS_ORIGIN` in backend `.env` matches your frontend URL
+   - Make sure `CORS_ORIGIN` in server `.env` matches your frontend URL
 
 ## File Structure
 
 ```
 PepperUni-main/
-├── backend/
+├── server/
 │   ├── controllers/     # Request handlers
 │   ├── models/         # MongoDB models
 │   ├── routes/         # API routes
@@ -148,7 +148,7 @@ PepperUni-main/
 │   ├── uploads/        # Temporary file storage (auto-created)
 │   ├── server.js       # Entry point
 │   └── .env           # Environment variables (create this)
-├── app/
+├── client/
 │   ├── src/
 │   │   ├── components/ # React components
 │   │   └── App.js     # Main app component

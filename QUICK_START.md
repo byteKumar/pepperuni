@@ -14,11 +14,11 @@ Get PepperUni running in 5 minutes!
 ### 1. Backend Setup (2 minutes)
 
 ```bash
-cd backend
+cd server
 npm install
 ```
 
-Create `backend/.env` file:
+Create `server/.env` file:
 ```env
 PORT=5001
 MONGODB_URI=your_mongodb_connection_string_here
@@ -38,7 +38,7 @@ You should see: `Server running on http://localhost:5001` and `MongoDB connected
 
 Open a new terminal:
 ```bash
-cd app
+cd client
 npm install
 npm start
 ```

@@ -51,9 +51,32 @@ exports.mainJob = async (req, res) => {
 
     // Extract score from the edited resume (if available)
     let score = "N/A";
-    const scoreMatch = editResult.data.editedResume.match(/Total Score[:\s]*(\d+)/i);
-    if (scoreMatch) {
-      score = scoreMatch[1];
+    const editedResumeText = editResult.data.editedResume || "";
+    
+    // Try multiple patterns to extract score
+    const scorePatterns = [
+      /Total Score[:\s]*(\d+)/i,
+      /Score[:\s]*(\d+)\s*\/\s*100/i,
+      /Score[:\s]*(\d+)/i,
+      /(\d+)\s*\/\s*100/i,
+      /Score:\s*(\d+)/i,
+      /Total Score:\s*(\d+)/i,
+    ];
+    
+    for (const pattern of scorePatterns) {
+      const match = editedResumeText.match(pattern);
+      if (match && match[1]) {
+        const extractedScore = parseInt(match[1]);
+        if (extractedScore >= 0 && extractedScore <= 100) {
+          score = extractedScore.toString();
+          console.log(`Score extracted: ${score} using pattern: ${pattern}`);
+          break;
+        }
+      }
+    }
+    
+    if (score === "N/A") {
+      console.log("Warning: Could not extract score from AI response");
     }
 
     // Save resume to database if user_id is provided

@@ -49,7 +49,7 @@ This guide provides step-by-step instructions for connecting PepperUni to MongoD
 
 ### Step 6: Update .env File
 
-1. Open `backend/.env` file
+1. Open `server/.env` file
 2. Replace the connection string:
    ```
    MONGODB_URI=mongodb+srv://pepperuni_user:YOUR_PASSWORD@cluster0.xxxxx.mongodb.net/pepperuni?retryWrites=true&w=majority
@@ -62,7 +62,7 @@ This guide provides step-by-step instructions for connecting PepperUni to MongoD
 
 1. Start your backend server:
    ```bash
-   cd backend
+   cd server
    npm start
    ```
 2. You should see: `MongoDB connected`
@@ -122,7 +122,7 @@ You should see the MongoDB shell. Type `exit` to exit.
 
 ### Step 4: Update .env File
 
-1. Open `backend/.env` file
+1. Open `server/.env` file
 2. Add the connection string:
    ```
    MONGODB_URI=mongodb://localhost:27017/pepperuni
@@ -134,7 +134,7 @@ You should see the MongoDB shell. Type `exit` to exit.
 
 1. Start your backend server:
    ```bash
-   cd backend
+   cd server
    npm start
    ```
 2. You should see: `MongoDB connected`

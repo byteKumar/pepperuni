@@ -108,6 +108,31 @@ const ResumeList = () => {
     return "#f44336"; // Red
   };
 
+  // Extract score from resume text if score field is missing
+  const extractScoreFromText = (resumeText) => {
+    if (!resumeText) return null;
+    
+    const scorePatterns = [
+      /Total Score[:\s]*(\d+)/i,
+      /Score[:\s]*(\d+)\s*\/\s*100/i,
+      /Score[:\s]*(\d+)/i,
+      /(\d+)\s*\/\s*100/i,
+      /Score:\s*(\d+)/i,
+      /Total Score:\s*(\d+)/i,
+    ];
+    
+    for (const pattern of scorePatterns) {
+      const match = resumeText.match(pattern);
+      if (match && match[1]) {
+        const extractedScore = parseInt(match[1]);
+        if (extractedScore >= 0 && extractedScore <= 100) {
+          return extractedScore.toString();
+        }
+      }
+    }
+    return null;
+  };
+
   const handleViewResume = (resumeData) => {
     navigate("/response", {
       state: {
@@ -343,17 +368,28 @@ const ResumeList = () => {
                     <h3 style={styles.resumeTitle}>
                       {resume.job_title || "Untitled Resume"}
                     </h3>
-                    {resume.score && resume.score !== "N/A" && (
-                      <div
-                        style={{
-                          ...styles.scoreBadge,
-                          backgroundColor: getScoreColor(resume.score),
-                        }}
-                      >
-                        <TrendingUp size={16} />
-                        {resume.score}/100
-                      </div>
-                    )}
+                    {(() => {
+                      // Try to get score from resume.score field, or extract from resume text
+                      let displayScore = resume.score;
+                      if (!displayScore || displayScore === "N/A" || displayScore === null) {
+                        displayScore = extractScoreFromText(resume.resume);
+                      }
+                      
+                      if (displayScore && displayScore !== "N/A" && displayScore !== null) {
+                        return (
+                          <div
+                            style={{
+                              ...styles.scoreBadge,
+                              backgroundColor: getScoreColor(displayScore),
+                            }}
+                          >
+                            <TrendingUp size={16} />
+                            {displayScore}/100
+                          </div>
+                        );
+                      }
+                      return null;
+                    })()}
                   </div>
 
                   <div style={styles.resumeMeta}>

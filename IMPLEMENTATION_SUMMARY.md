@@ -6,25 +6,25 @@ This document summarizes all the changes and fixes made to complete the PepperUn
 
 ### 1. Backend Implementation
 
-#### Fixed Resume Processing (`backend/controllers/resumeController.js`)
+#### Fixed Resume Processing (`server/controllers/resumeController.js`)
 - ✅ Integrated PDF text extraction with OpenAI resume editing
 - ✅ Added proper error handling and file cleanup
 - ✅ Implemented resume saving to MongoDB with scores
 - ✅ Added support for job title and description
 - ✅ Proper response formatting with status, data, and error handling
 
-#### Fixed Resume Routes (`backend/routes/resumeRoutes.js`)
+#### Fixed Resume Routes (`server/routes/resumeRoutes.js`)
 - ✅ Created uploads directory automatically
 - ✅ Added file type validation (PDF, DOC, DOCX)
 - ✅ Added file size limit (50MB)
 - ✅ Proper error handling for file uploads
 
-#### Fixed Edit Resume Controller (`backend/controllers/editResumeController.js`)
+#### Fixed Edit Resume Controller (`server/controllers/editResumeController.js`)
 - ✅ Exported `editResume` function properly
 - ✅ Fixed function call in `editResumeController`
 - ✅ Maintained OpenAI integration with proper prompt structure
 
-#### Fixed Auth Middleware (`backend/middleware/authMiddleware.js`)
+#### Fixed Auth Middleware (`server/middleware/authMiddleware.js`)
 - ✅ Added support for "Bearer" token format
 - ✅ Improved error messages
 - ✅ Proper token extraction and validation
@@ -35,28 +35,28 @@ This document summarizes all the changes and fixes made to complete the PepperUn
 
 ### 2. Frontend Implementation
 
-#### Fixed SignUp Component (`app/src/components/SignUp.js`)
-- ✅ Replaced localStorage with backend API calls
+#### Fixed SignUp Component (`client/src/components/SignUp.js`)
+- ✅ Replaced localStorage with server API calls
 - ✅ Added proper error handling and validation
 - ✅ Added loading states
 - ✅ Fixed routing with React Router Link
 - ✅ Improved form validation (email format, password length)
 
-#### Fixed Login Component (`app/src/components/Login.js`)
-- ✅ Replaced localStorage with backend API calls
+#### Fixed Login Component (`client/src/components/Login.js`)
+- ✅ Replaced localStorage with server API calls
 - ✅ Added JWT token storage
 - ✅ Added user data storage
 - ✅ Added loading states and error handling
 - ✅ Fixed routing with React Router Link
 
-#### Fixed ResumeUpload Component (`app/src/components/ResumeUpload.js`)
+#### Fixed ResumeUpload Component (`client/src/components/ResumeUpload.js`)
 - ✅ Updated to send all required data (job_title, job_description, user_id)
 - ✅ Added JWT token to requests
-- ✅ Updated API endpoint to match backend
+- ✅ Updated API endpoint to match server
 - ✅ Improved error handling and user feedback
 - ✅ Proper state management for navigation
 
-#### Fixed Response Component (`app/src/components/Response.js`)
+#### Fixed Response Component (`client/src/components/Response.js`)
 - ✅ Removed unnecessary API call (resume already processed)
 - ✅ Added proper display for AI-generated resume
 - ✅ Added score display
@@ -66,7 +66,7 @@ This document summarizes all the changes and fixes made to complete the PepperUn
 
 ### 3. Configuration & Documentation
 
-#### Updated .gitignore (`backend/.gitignore`)
+#### Updated .gitignore (`server/.gitignore`)
 - ✅ Added `.env` to ignore list
 - ✅ Added `uploads/` directory to ignore
 - ✅ Added file type patterns for PDF, DOC, DOCX
@@ -117,13 +117,13 @@ CORS_ORIGIN=http://localhost:3000
 
 Before running the application:
 
-- [ ] Install backend dependencies: `cd backend && npm install`
-- [ ] Install frontend dependencies: `cd app && npm install`
-- [ ] Create `backend/.env` file with all required variables
+- [ ] Install backend dependencies: `cd server && npm install`
+- [ ] Install frontend dependencies: `cd client && npm install`
+- [ ] Create `server/.env` file with all required variables
 - [ ] Set up MongoDB connection (see `MONGODB_SETUP.md`)
 - [ ] Get OpenAI API key from [OpenAI Platform](https://platform.openai.com/api-keys)
-- [ ] Start backend: `cd backend && npm start`
-- [ ] Start frontend: `cd app && npm start`
+- [ ] Start backend: `cd server && npm start`
+- [ ] Start frontend: `cd client && npm start`
 
 ## 🎯 Key Features Implemented
 
@@ -158,19 +158,18 @@ Before running the application:
 ## 🔍 Files Modified
 
 ### Backend
-- `backend/controllers/resumeController.js` - Complete rewrite
-- `backend/controllers/editResumeController.js` - Fixed exports
-- `backend/routes/resumeRoutes.js` - Enhanced file handling
-- `backend/middleware/authMiddleware.js` - Fixed Bearer token
-- `backend/routes/index.js` - Updated route mounting
-- `backend/package.json` - Added start script
-- `backend/.gitignore` - Added .env and uploads
+- `server/controllers/resumeController.js` - Complete rewrite
+- `server/controllers/editResumeController.js` - Fixed exports
+- `server/routes/resumeRoutes.js` - Enhanced file handling
+- `server/middleware/authMiddleware.js` - Fixed Bearer token
+- `server/package.json` - Added start script
+- `server/.gitignore` - Added .env and uploads
 
 ### Frontend
-- `app/src/components/SignUp.js` - API integration
-- `app/src/components/Login.js` - API integration
-- `app/src/components/ResumeUpload.js` - Complete flow
-- `app/src/components/Response.js` - Display and download
+- `client/src/components/SignUp.js` - API integration
+- `client/src/components/Login.js` - API integration
+- `client/src/components/ResumeUpload.js` - Complete flow
+- `client/src/components/Response.js` - Display and download
 
 ## 📝 Notes
 
@@ -180,7 +179,7 @@ Before running the application:
 
 3. **MongoDB**: The application automatically creates collections when needed. No manual database setup required.
 
-4. **File Storage**: Uploaded files are stored temporarily in `backend/uploads/` and automatically deleted after processing.
+4. **File Storage**: Uploaded files are stored temporarily in `server/uploads/` and automatically deleted after processing.
 
 5. **Authentication**: JWT tokens expire after 1 day. Users need to re-login after token expiration.
 
