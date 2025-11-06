@@ -315,7 +315,7 @@ const SharedNavigation = ({ activePage = "home" }) => {
             }}
           >
             <FileDown size={20} />
-            Resume
+            History
           </Link>
           <Link
             to="/profile"
