@@ -4,7 +4,7 @@ import { useTheme } from "../contexts/ThemeContext";
 import { Eye, EyeOff } from "lucide-react";
 import axios from "axios";
 import API_BASE_URL from "../config/api";
-import "./SignUp.css";
+import "./Login.css";
 
 const SignUp = () => {
   const { isDark } = useTheme();
@@ -62,18 +62,40 @@ const SignUp = () => {
 
   return (
     <div className="container">
-      <div className="sidebar">
-        <h1>PepperUni</h1>
-        <p>Build a Winning Product Resume with AI Expertise</p>
+      <div className="left-section">
+        <div className="left-content">
+          <div className="logo">PepperUni</div>
+          <h1 className="hero-title">
+            Transform Your Resume<br />
+            Into Interview Gold
+          </h1>
+          <p className="hero-description">
+            Get instant, AI-powered feedback on your resume tailored to each job application. 
+            Our intelligent system analyzes your resume against job descriptions, suggests improvements, 
+            and helps you land more interviews.
+          </p>
+          <div className="features">
+            <div className="feature-item">
+              <div className="feature-dot"></div>
+              <span>Instant resume scoring</span>
+            </div>
+            <div className="feature-item">
+              <div className="feature-dot"></div>
+              <span>Job-specific recommendations</span>
+            </div>
+            <div className="feature-item">
+              <div className="feature-dot"></div>
+              <span>ATS optimization</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <main className="main">
+      <div className="right-section">
+        <div className="form-container">
         <div className="form">
           <h2 className="title">Create your account</h2>
           <p className="subtitle">
-            Already have an account?{" "}
-            <Link to="/login" className="link">
-              Login
-            </Link>
+              Already have an account? <Link to="/login">Sign In</Link>
           </p>
           <form onSubmit={handleSignUp}>
             <div className="input-group">
@@ -89,7 +111,7 @@ const SignUp = () => {
                 required
               />
               {errors.studentName && (
-                <p className="error-message">{errors.studentName}</p>
+                <p style={{ color: isDark ? "#ff6b6b" : "#c62828", marginTop: "0.5rem", fontSize: "0.8125rem" }}>{errors.studentName}</p>
               )}
             </div>
             <div className="input-group">
@@ -104,7 +126,7 @@ const SignUp = () => {
                 }
                 required
               />
-              {errors.email && <p className="error-message">{errors.email}</p>}
+              {errors.email && <p style={{ color: isDark ? "#ff6b6b" : "#c62828", marginTop: "0.5rem", fontSize: "0.8125rem" }}>{errors.email}</p>}
             </div>
             <div className="input-group">
               <label htmlFor="password">Password*</label>
@@ -151,7 +173,7 @@ const SignUp = () => {
                 </button>
               </div>
               {errors.password && (
-                <p className="error-message">{errors.password}</p>
+                <p style={{ color: isDark ? "#ff6b6b" : "#c62828", marginTop: "0.5rem", fontSize: "0.8125rem" }}>{errors.password}</p>
               )}
             </div>
             <div className="input-group">
@@ -202,16 +224,17 @@ const SignUp = () => {
                 </button>
               </div>
               {errors.confirmPassword && (
-                <p className="error-message">{errors.confirmPassword}</p>
+                <p style={{ color: isDark ? "#ff6b6b" : "#c62828", marginTop: "0.5rem", fontSize: "0.8125rem" }}>{errors.confirmPassword}</p>
               )}
             </div>
-            {errorMessage && <p className="error-message" style={{ color: isDark ? "#ff6b6b" : "#c62828", marginTop: "0.75rem", padding: "0.75rem", backgroundColor: isDark ? "rgba(244, 67, 54, 0.1)" : "#ffebee", borderRadius: "8px", border: `1px solid ${isDark ? "rgba(244, 67, 54, 0.3)" : "#ffcdd2"}` }}>{errorMessage}</p>}
+            {errorMessage && <p style={{ color: isDark ? "#ff6b6b" : "#c62828", marginTop: "0.75rem", padding: "0.75rem", backgroundColor: isDark ? "rgba(244, 67, 54, 0.1)" : "#ffebee", borderRadius: "8px", border: `1px solid ${isDark ? "rgba(244, 67, 54, 0.3)" : "#ffcdd2"}`, fontSize: "0.875rem" }}>{errorMessage}</p>}
             <button type="submit" className="button" disabled={loading}>
               {loading ? "Creating Account..." : "Sign Up"}
             </button>
           </form>
         </div>
-      </main>
+        </div>
+      </div>
     </div>
   );
 };

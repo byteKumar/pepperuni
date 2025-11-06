@@ -13,10 +13,12 @@ body {
 .container {
   display: flex;
   min-height: 100vh;
+  max-height: 100vh;
   flex-direction: row;
   background-color: var(--bg-primary);
   transition: background-color 0.3s ease;
   font-family: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', 'Roboto', sans-serif";
+  overflow: hidden;
 }
 
 /* Left section styles */
@@ -30,7 +32,8 @@ body {
   justify-content: center;
   align-items: flex-start;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
+  max-height: 100vh;
   transition: all 0.3s ease;
 }
 
@@ -102,9 +105,11 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: clamp(2rem, 5vw, 4rem);
+  padding: clamp(1.5rem, 3vw, 2rem);
   background-color: var(--bg-primary);
   transition: background-color 0.3s ease;
+  overflow-y: auto;
+  max-height: 100vh;
 }
 
 .form-container {
@@ -116,7 +121,7 @@ body {
 .form {
   width: 100%;
   background-color: var(--bg-secondary);
-  padding: clamp(2rem, 4vw, 2.5rem);
+  padding: clamp(1.75rem, 3.5vw, 2.25rem);
   border-radius: 16px;
   box-shadow: var(--card-shadow);
   border: 1px solid var(--border-color);
@@ -136,7 +141,7 @@ body {
   font-size: clamp(1.375rem, 3.5vw, 1.75rem);
   font-weight: 700;
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   color: var(--text-primary);
   letter-spacing: -0.5px;
 }
@@ -145,7 +150,7 @@ body {
   font-size: 0.8125rem;
   color: var(--text-secondary);
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .subtitle a {
@@ -168,7 +173,7 @@ body {
 }
 
 .input-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .input-group label {
