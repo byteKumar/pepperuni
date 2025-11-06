@@ -180,7 +180,7 @@ const ResumeList = () => {
 
     try {
       const response = await axios.delete(
-        `${API_BASE_URL}/api/resumes/${deleteConfirm.resumeId}`,
+        `${API_BASE_URL}/api/resumes/delete/${deleteConfirm.resumeId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -49,7 +49,7 @@ router.post("/main_job", upload.single("file"), mainJob);
 router.get("/resumes/user/:user_id", getUserResumes);
 
 // Define the route to delete a resume
-// This route is at /api/resumes/:resume_id
-router.delete("/resumes/:resume_id", authMiddleware, deleteResume);
+// This route is at /api/resumes/delete/:resume_id
+router.delete("/resumes/delete/:resume_id", authMiddleware, deleteResume);
 
 module.exports = router;
