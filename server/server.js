@@ -34,16 +34,34 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
+// MongoDB connection options
+const mongooseOptions = {
+  serverSelectionTimeoutMS: 30000, // 30 seconds timeout
+  socketTimeoutMS: 45000, // 45 seconds socket timeout
+  connectTimeoutMS: 30000, // 30 seconds connection timeout
+  bufferCommands: false, // Disable mongoose buffering
+  bufferMaxEntries: 0, // Disable mongoose buffering
+};
+
+// Connect to MongoDB before starting the server
 mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.error("MongoDB connection error:", err));
-
-app.use("/api/auth", authRoutes);
-app.use("/api/profile", profileRoutes);
-app.use("/api", resumeRoutes);
-app.use("/api/resumes", editResumeRoutes);
-
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+  .connect(process.env.MONGODB_URI, mongooseOptions)
+  .then(() => {
+    console.log("MongoDB connected successfully");
+    
+    // Mount routes after MongoDB connection
+    app.use("/api/auth", authRoutes);
+    app.use("/api/profile", profileRoutes);
+    app.use("/api", resumeRoutes);
+    app.use("/api/resumes", editResumeRoutes);
+    
+    // Start server only after MongoDB connection
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+    console.error("Please check your MONGODB_URI in the .env file");
+    process.exit(1); // Exit if MongoDB connection fails
+  });
