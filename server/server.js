@@ -39,9 +39,11 @@ const mongooseOptions = {
   serverSelectionTimeoutMS: 30000, // 30 seconds timeout
   socketTimeoutMS: 45000, // 45 seconds socket timeout
   connectTimeoutMS: 30000, // 30 seconds connection timeout
-  bufferCommands: false, // Disable mongoose buffering
-  bufferMaxEntries: 0, // Disable mongoose buffering
 };
+
+// Disable mongoose buffering globally (fail fast instead of queueing)
+mongoose.set('bufferCommands', false);
+mongoose.set('bufferMaxEntries', 0);
 
 // Connect to MongoDB before starting the server
 mongoose
