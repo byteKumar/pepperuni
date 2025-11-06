@@ -9,6 +9,7 @@ import API_BASE_URL from "../config/api";
 const ResumeUpload = () => {
   const { isDark } = useTheme();
   const [jobTitle, setJobTitle] = useState("");
+  const [company, setCompany] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState("");
@@ -41,7 +42,7 @@ const ResumeUpload = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!file || !jobTitle || !jobDescription) {
+    if (!file || !jobTitle || !company || !jobDescription) {
       alert("Please fill out all fields and upload a file.");
       return;
     }
@@ -52,6 +53,7 @@ const ResumeUpload = () => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("job_title", jobTitle);
+    formData.append("company", company);
     formData.append("job_description", jobDescription);
     if (user.id) {
       formData.append("user_id", user.id);
@@ -78,6 +80,7 @@ const ResumeUpload = () => {
             editedResume: res.data.data.editedResume,
             score: res.data.data.score,
             jobTitle: jobTitle,
+            company: company,
             jobDescription: jobDescription,
           },
         });
@@ -529,6 +532,23 @@ const ResumeUpload = () => {
                 value={jobTitle}
                 onChange={(e) => setJobTitle(e.target.value)}
                 placeholder="e.g., Product Manager"
+                onFocus={(e) => {
+                  Object.assign(e.currentTarget.style, styles.inputFocus);
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = isDark ? "var(--border-color)" : "#ddd";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+              />
+            </div>
+            <div style={styles.formGroup}>
+              <label style={styles.label}>Company</label>
+              <input
+                type="text"
+                style={styles.input}
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+                placeholder="e.g., Google"
                 onFocus={(e) => {
                   Object.assign(e.currentTarget.style, styles.inputFocus);
                 }}

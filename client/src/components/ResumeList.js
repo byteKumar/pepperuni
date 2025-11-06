@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Download, Calendar, TrendingUp, FileText, Trash2, X } from "lucide-react";
+import { Download, Calendar, TrendingUp, FileText, Trash2, X, Building2 } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
 import SharedNavigation from "./SharedNavigation";
 import axios from "axios";
@@ -65,7 +65,13 @@ const ResumeList = () => {
 
       console.log("Resume fetch response:", response.data);
       if (response.data.status === "success") {
-        setResumes(response.data.data.resumes || []);
+        const fetchedResumes = response.data.data.resumes || [];
+        console.log("Fetched resumes with company data:", fetchedResumes.map(r => ({ 
+          job_title: r.job_title, 
+          company: r.company,
+          hasCompany: !!r.company 
+        })));
+        setResumes(fetchedResumes);
       } else {
         setError(response.data.message || "Failed to fetch resumes");
       }
@@ -676,9 +682,22 @@ const ResumeList = () => {
                   }}
                 >
                   <div style={styles.resumeHeader}>
-                    <h3 style={styles.resumeTitle}>
-                      {resume.job_title || "Untitled Resume"}
-                    </h3>
+                    <div style={{ flex: 1 }}>
+                      <h3 style={styles.resumeTitle}>
+                        {resume.job_title || "Untitled Resume"}
+                      </h3>
+                      {resume.company && resume.company.trim() !== "" && (
+                        <div style={{
+                          fontSize: "clamp(0.75rem, 1.5vw, 0.8125rem)",
+                          color: isDark ? "rgba(255,255,255,0.6)" : "rgba(29,29,31,0.6)",
+                          marginTop: "0.25rem",
+                          fontFamily: "Inter, -apple-system, sans-serif",
+                          fontWeight: "500",
+                        }}>
+                          {resume.company}
+                        </div>
+                      )}
+                    </div>
                     {(() => {
                       // Try to get score from resume.score field, or extract from resume text
                       let displayScore = resume.score;
@@ -704,6 +723,12 @@ const ResumeList = () => {
                   </div>
 
                   <div style={styles.resumeMeta}>
+                    {resume.company && resume.company.trim() !== "" && (
+                      <div style={styles.metaItem}>
+                        <Building2 size={16} />
+                        {resume.company}
+                      </div>
+                    )}
                     <div style={styles.metaItem}>
                       <Calendar size={16} />
                       {formatDate(resume.created_date)}

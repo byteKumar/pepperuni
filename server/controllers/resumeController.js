@@ -14,7 +14,7 @@ exports.mainJob = async (req, res) => {
       });
     }
 
-    const { job_title, job_description, user_id } = req.body;
+    const { job_title, company, job_description, user_id } = req.body;
     const filePath = req.file.path;
 
     if (!job_description) {
@@ -86,6 +86,7 @@ exports.mainJob = async (req, res) => {
           user_id,
           filename: req.file.originalname || req.file.filename,
           job_title: job_title || "Untitled",
+          company: company || "",
           job_description: job_description || "",
           original_resume: resumeText, // Store original extracted text
           resume: editResult.data.editedResume, // Store edited/tailored resume
