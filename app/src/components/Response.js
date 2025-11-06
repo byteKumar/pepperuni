@@ -1,55 +1,52 @@
-import React, { useState, useRef } from "react";
-import { LayoutGrid, FileDown, User2, Settings } from "lucide-react";
-import axios from "axios";
-import { useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { LayoutGrid, FileDown, User2, Settings, Download } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Response = () => {
-  const [editedResponse, setEditedResponse] = useState(null);
   const [loading, setLoading] = useState(false);
   const location = useLocation();
-  const { editedResume, jobDescription } = location.state || {};
+  const navigate = useNavigate();
+  const { originalResume, editedResume, score, jobTitle, jobDescription } = location.state || {};
+
+  useEffect(() => {
+    // Redirect if no data
+    if (!editedResume && !originalResume) {
+      navigate("/resumeupload");
+    }
+  }, [editedResume, originalResume, navigate]);
 
   // Function to process the resume text for display
   const processResumeText = (text) => {
     if (!text) return "";
-    const cleanText = text.replace(/[*#]/g, "");
-    const lines = cleanText.split("\n");
-    return lines.map((line, index) =>
-      line.trim() === "" ? <br key={index} /> : <p key={index}>{line.trim()}</p>
-    );
+    const lines = text.split("\n");
+    return lines.map((line, index) => {
+      const trimmedLine = line.trim();
+      if (trimmedLine === "") return <br key={index} />;
+      
+      // Format headers (lines that are all caps or start with #)
+      if (trimmedLine.match(/^#{1,6}\s/) || trimmedLine.match(/^[A-Z\s]{3,}$/)) {
+        return <h3 key={index} style={{ marginTop: "1rem", marginBottom: "0.5rem", fontWeight: "bold" }}>{trimmedLine.replace(/^#+\s/, "")}</h3>;
+      }
+      
+      // Format bold text (**text**)
+      const boldText = trimmedLine.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      
+      return <p key={index} style={{ marginBottom: "0.5rem", lineHeight: "1.6" }} dangerouslySetInnerHTML={{ __html: boldText }} />;
+    });
   };
 
-  // Function to call the backend to edit the resume
-  const pepperUnifyResumeText = async () => {
-    if (!editedResume || !jobDescription) {
-      console.error("Missing editedResume or jobDescription:", {
-        editedResume,
-        jobDescription,
-      });
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const response = await axios.post(
-        "http://localhost:5001/api/resumes/edit-resume",
-        {
-          resumeText: editedResume,
-          jobDescription: jobDescription,
-        }
-      );
-
-      if (response.data.status === "success") {
-        setEditedResponse(response.data.data.editedResume);
-      } else {
-        console.error("Failed to edit resume:", response.data.message);
-      }
-    } catch (error) {
-      console.error("Error calling backend API:", error.message);
-    } finally {
-      setLoading(false);
-    }
+  const handleDownload = () => {
+    if (!editedResume) return;
+    
+    const blob = new Blob([editedResume], { type: "text/plain" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `resume_${jobTitle || "edited"}_${new Date().getTime()}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
   };
 
   const styles = {
@@ -148,26 +145,55 @@ const Response = () => {
         </nav>
       </aside>
       <main style={styles.main}>
-        <h1 style={styles.title}>Resume Analysis</h1>
+        <h1 style={styles.title}>Resume Analysis & Tailored Resume</h1>
+        
+        {score && score !== "N/A" && (
+          <div style={{ 
+            marginBottom: "1.5rem", 
+            padding: "1rem", 
+            backgroundColor: "#e8f5e9", 
+            borderRadius: "8px",
+            border: "2px solid #4caf50"
+          }}>
+            <h2 style={{ margin: 0, color: "#2e7d32", fontSize: "1.25rem" }}>
+              Total Score: {score}/100
+            </h2>
+          </div>
+        )}
+
+        {jobTitle && (
+          <div style={{ marginBottom: "1rem", color: "#666" }}>
+            <strong>Job Title:</strong> {jobTitle}
+          </div>
+        )}
+
         {editedResume ? (
-          <div style={styles.textBox}>{processResumeText(editedResume)}</div>
+          <>
+            <div style={{ ...styles.textBox, marginBottom: "1.5rem" }}>
+              <h2 style={{ marginTop: 0, marginBottom: "1rem", color: "#333" }}>
+                AI-Tailored Resume
+              </h2>
+              {processResumeText(editedResume)}
+            </div>
+            
+            <div style={styles.buttonContainer}>
+              <button
+                style={{ ...styles.button, display: "flex", alignItems: "center", gap: "0.5rem" }}
+                onClick={handleDownload}
+              >
+                <Download size={20} /> Download Resume
+              </button>
+            </div>
+          </>
+        ) : originalResume ? (
+          <div style={styles.textBox}>
+            <h2 style={{ marginTop: 0, marginBottom: "1rem", color: "#333" }}>
+              Original Resume
+            </h2>
+            {processResumeText(originalResume)}
+          </div>
         ) : (
           <p>No resume available.</p>
-        )}
-        <div style={styles.buttonContainer}>
-          <button
-            style={styles.button}
-            onClick={pepperUnifyResumeText}
-            disabled={loading}
-          >
-            {loading ? "Processing..." : "PepperUnify"}
-          </button>
-        </div>
-        {editedResponse && (
-          <div style={styles.textBox}>
-            <h2>Edited Resume</h2>
-            {processResumeText(editedResponse)}
-          </div>
         )}
       </main>
     </div>

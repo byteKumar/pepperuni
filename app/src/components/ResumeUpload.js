@@ -44,34 +44,48 @@ const ResumeUpload = () => {
       return;
     }
 
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const token = localStorage.getItem("token");
+
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("job_title", jobTitle);
     formData.append("job_description", jobDescription);
+    if (user.id) {
+      formData.append("user_id", user.id);
+    }
 
     setLoading(true);
 
     try {
       const res = await axios.post(
-        "http://localhost:5001/api/main_job/",
+        "http://localhost:5001/api/main_job",
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            ...(token && { Authorization: `Bearer ${token}` }),
           },
         }
       );
 
-      if (res.status === 200) {
+      if (res.data.status === "success") {
         navigate("/response", {
           state: {
-            editedResume: res.data.extractedText, // Pass edited resume
-            jobDescription, // Pass job description
+            originalResume: res.data.data.extractedText,
+            editedResume: res.data.data.editedResume,
+            score: res.data.data.score,
+            jobTitle: jobTitle,
+            jobDescription: jobDescription,
           },
         });
+      } else {
+        alert(res.data.message || "An error occurred. Please try again.");
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert("An error occurred. Please try again.");
+      const errorMsg = error.response?.data?.message || error.response?.data?.error || "An error occurred. Please try again.";
+      alert(errorMsg);
     } finally {
       setLoading(false);
     }

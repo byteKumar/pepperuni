@@ -6,7 +6,7 @@ const axios = require("axios");
  * @param {string} jobDescription - The text of the job description.
  * @returns {Promise<object>} - Edited resume and status.
  */
-const editResume = async (text, jobDescription) => {
+exports.editResume = async (text, jobDescription) => {
   //  console.log("inside 10", process.env.OPENAI_API_KEY);
   const messages = [
     {
@@ -130,7 +130,7 @@ exports.editResumeController = async (req, res) => {
   }
 
   try {
-    const result = await editResume(resumeText, jobDescription);
+    const result = await exports.editResume(resumeText, jobDescription);
     return res.status(200).json(result);
   } catch (error) {
     console.error("Error in editResumeController:", error.message);

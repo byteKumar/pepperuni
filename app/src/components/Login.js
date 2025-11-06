@@ -1,29 +1,37 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
 import "./Login.css";
 
 const Login = () => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [loginError, setLoginError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    setLoginError("");
+    setLoading(true);
 
-    const storedUser = JSON.parse(localStorage.getItem("userData"));
+    try {
+      const response = await axios.post("http://localhost:5001/api/auth/signin", {
+        email: loginData.email,
+        password: loginData.password,
+      });
 
-    if (storedUser) {
-      if (
-        loginData.email === storedUser.email &&
-        loginData.password === storedUser.password
-      ) {
-        alert("Login successful!");
+      if (response.status === 200) {
+        // Store token and user data
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
         navigate("/resumeupload");
-      } else {
-        setLoginError("Invalid email or password.");
       }
-    } else {
-      setLoginError("No account found. Please sign up first.");
+    } catch (error) {
+      const errorMsg = error.response?.data?.error || "Invalid email or password.";
+      setLoginError(errorMsg);
+      console.error("Login error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -37,7 +45,7 @@ const Login = () => {
         <div className="form">
           <h2 className="title">Sign In</h2>
           <p className="subtitle">
-            Do not have an account? <a href="/signup">Create an Account</a>
+            Do not have an account? <Link to="/signup">Create an Account</Link>
           </p>
           <form onSubmit={handleLogin}>
             <div className="input-group">
@@ -66,9 +74,9 @@ const Login = () => {
                 }
               />
             </div>
-            {loginError && <p style={{ color: "red" }}>{loginError}</p>}
-            <button type="submit" className="button">
-              Sign In
+            {loginError && <p style={{ color: "red", marginTop: "0.5rem" }}>{loginError}</p>}
+            <button type="submit" className="button" disabled={loading}>
+              {loading ? "Signing In..." : "Sign In"}
             </button>
           </form>
         </div>

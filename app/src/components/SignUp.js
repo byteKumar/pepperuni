@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Ensure you have react-router-dom installed
+import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
 import "./SignUp.css";
 
 const SignUp = () => {
@@ -10,39 +11,46 @@ const SignUp = () => {
     confirmPassword: "",
   });
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate(); // React Router's hook for navigation
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   const validateForm = () => {
     const errors = {};
-    if (!formData.studentName) errors.studentName = "Name is required";
-    if (!formData.email) errors.email = "Email is required";
+    if (!formData.studentName.trim()) errors.studentName = "Name is required";
+    if (!formData.email.trim()) errors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) errors.email = "Email is invalid";
     if (!formData.password) errors.password = "Password is required";
+    else if (formData.password.length < 6) errors.password = "Password must be at least 6 characters";
     if (formData.password !== formData.confirmPassword)
       errors.confirmPassword = "Passwords do not match";
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      const newUser = {
+    setErrorMessage("");
+    if (!validateForm()) return;
+
+    setLoading(true);
+    try {
+      const response = await axios.post("http://localhost:5001/api/auth/signup", {
         studentName: formData.studentName,
         email: formData.email,
         password: formData.password,
-      };
-      localStorage.setItem("userData", JSON.stringify(newUser));
-
-      setFormData({
-        studentName: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
       });
-      setErrors({});
-      alert("Account successfully created!");
 
-      navigate("/login");
+      if (response.status === 201) {
+        alert("Account successfully created! Please login.");
+        navigate("/login");
+      }
+    } catch (error) {
+      const errorMsg = error.response?.data?.error || "An error occurred. Please try again.";
+      setErrorMessage(errorMsg);
+      console.error("Signup error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,9 +65,9 @@ const SignUp = () => {
           <h2 className="title">Create your account</h2>
           <p className="subtitle">
             Already have an account?{" "}
-            <a href="/login" className="link">
+            <Link to="/login" className="link">
               Login
-            </a>
+            </Link>
           </p>
           <form onSubmit={handleSignUp}>
             <div className="input-group">
@@ -127,8 +135,9 @@ const SignUp = () => {
                 <p className="error-message">{errors.confirmPassword}</p>
               )}
             </div>
-            <button type="submit" className="button">
-              Sign Up
+            {errorMessage && <p className="error-message" style={{ color: "red", marginTop: "0.5rem" }}>{errorMessage}</p>}
+            <button type="submit" className="button" disabled={loading}>
+              {loading ? "Creating Account..." : "Sign Up"}
             </button>
           </form>
         </div>
