@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useTheme } from "../contexts/ThemeContext";
 import axios from "axios";
 import "./SignUp.css";
 
 const SignUp = () => {
+  const { isDark } = useTheme();
   const [formData, setFormData] = useState({
     studentName: "",
     email: "",
@@ -135,7 +137,7 @@ const SignUp = () => {
                 <p className="error-message">{errors.confirmPassword}</p>
               )}
             </div>
-            {errorMessage && <p className="error-message" style={{ color: "red", marginTop: "0.5rem" }}>{errorMessage}</p>}
+            {errorMessage && <p className="error-message" style={{ color: isDark ? "#ff6b6b" : "#c62828", marginTop: "0.75rem", padding: "0.75rem", backgroundColor: isDark ? "rgba(244, 67, 54, 0.1)" : "#ffebee", borderRadius: "8px", border: `1px solid ${isDark ? "rgba(244, 67, 54, 0.3)" : "#ffcdd2"}` }}>{errorMessage}</p>}
             <button type="submit" className="button" disabled={loading}>
               {loading ? "Creating Account..." : "Sign Up"}
             </button>

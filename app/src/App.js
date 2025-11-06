@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import ResumeBuilder from "./components/ResumeBuilder";
 //  import RB from "./components/RB";
 // import SignUp from "./components/SignUp";
@@ -13,19 +14,21 @@ import Profile from "./components/Profile";
 import "./App.css";
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<ResumeBuilder />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/resumeupload" element={<ResumeUpload />} />
-        <Route path="/login" element={<Login />} />
-        {/* <Route path="/rb" element={<RB />} /> */}
-        <Route path="/response" element={<Response />} />
-        <Route path="/JD" element={<JobDetails />} />
-        <Route path="/resume" element={<ResumeList />} />
-        <Route path="/profile" element={<Profile />} />
-      </Routes>
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<ResumeBuilder />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/resumeupload" element={<ResumeUpload />} />
+          <Route path="/login" element={<Login />} />
+          {/* <Route path="/rb" element={<RB />} /> */}
+          <Route path="/response" element={<Response />} />
+          <Route path="/JD" element={<JobDetails />} />
+          <Route path="/resume" element={<ResumeList />} />
+          <Route path="/profile" element={<Profile />} />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 };
 

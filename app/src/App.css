@@ -1,10 +1,76 @@
+/* Theme Variables */
+:root[data-theme="dark"] {
+  --bg-primary: #000000;
+  --bg-secondary: #1c1c1e;
+  --bg-tertiary: #2c2c2e;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-tertiary: rgba(255, 255, 255, 0.5);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --accent-color: #ffffff;
+  --accent-hover: #f5f5f7;
+  --success-color: #30d158;
+  --error-color: #ff453a;
+  --warning-color: #ff9f0a;
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  --card-hover-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+
+:root[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f7;
+  --bg-tertiary: #ffffff;
+  --text-primary: #1d1d1f;
+  --text-secondary: #86868b;
+  --text-tertiary: #86868b;
+  --border-color: #e5e5e7;
+  --accent-color: #1d1d1f;
+  --accent-hover: #000000;
+  --success-color: #30d158;
+  --error-color: #ff453a;
+  --warning-color: #ff9f0a;
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --card-hover-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
 body {
-  /* background: rgb(2, 0, 36);
-  background: radial-gradient(
-    circle,
-    rgba(2, 0, 36, 1) 0%,
-    rgba(30, 54, 59, 1) 0%,
-    rgba(93, 93, 116, 1) 100%
-  ); */
-  font-family: "Poppins", sans-serif !important;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+/* Smooth transitions for theme changes */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 768px) {
+  /* Mobile styles */
+  body {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Tablet styles */
+  body {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 1025px) {
+  /* Desktop styles */
+  body {
+    font-size: 16px;
+  }
 }

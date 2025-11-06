@@ -13,30 +13,41 @@ body {
 .container {
   display: flex;
   min-height: 100vh;
-  flex-direction: row; /* Default for desktop */
+  flex-direction: row;
+  background-color: var(--bg-secondary);
+  transition: background-color 0.3s ease;
 }
 
 /* Sidebar styles */
 .sidebar {
-  width: 40%; /* Take 40% of the screen on desktop */
-  background-color: black;
-  color: white;
-  padding: 2rem;
+  width: 40%;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  padding: 3rem 2rem;
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  border-right: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+[data-theme="light"] .sidebar {
+  background-color: #000000;
+  color: #ffffff;
 }
 
 .sidebar h1 {
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
+  font-size: 2.75rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.5px;
 }
 
 .sidebar p {
   font-size: 1.125rem;
-  color: #ccc;
+  color: var(--text-secondary);
+  line-height: 1.6;
 }
 
 /* Main content styles */
@@ -45,31 +56,59 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
+  padding: 3rem 2rem;
+  background-color: var(--bg-primary);
+  transition: background-color 0.3s ease;
 }
 
 .form {
   width: 100%;
-  max-width: 400px;
+  max-width: 450px;
+  background-color: var(--bg-secondary);
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+[data-theme="light"] .form {
+  background-color: #ffffff;
 }
 
 .title {
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: clamp(1.5rem, 4vw, 1.875rem);
+  font-weight: 700;
   text-align: center;
   margin-bottom: 1.5rem;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
 }
 
 .subtitle {
-  font-size: 0.875rem;
-  color: #666;
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
   text-align: center;
   margin-bottom: 2rem;
 }
 
 .subtitle a {
-  color: blue;
-  text-decoration: underline;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: 2px;
+  transition: all 0.2s ease;
+}
+
+[data-theme="light"] .subtitle a {
+  color: var(--accent-color);
+}
+
+.subtitle a:hover {
+  color: var(--accent-color);
+  border-bottom-color: var(--accent-color);
+  opacity: 0.9;
 }
 
 .input-group {
@@ -78,40 +117,66 @@ body {
 
 .input-group label {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.625rem;
   font-size: 0.875rem;
-  color: #9794aa;
+  font-weight: 600;
+  color: var(--text-secondary);
 }
 
 .input-group input {
   width: 100%;
-  padding: 0.75rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  padding: clamp(0.875rem, 2vw, 1rem);
+  font-size: clamp(0.9375rem, 2vw, 1rem);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+[data-theme="light"] .input-group input {
+  background-color: #ffffff;
+}
+
+.input-group input:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+.input-group input::placeholder {
+  color: var(--text-tertiary);
 }
 
 .button {
   width: 100%;
-  padding: 0.9rem;
-  font-size: 1rem;
-  font-weight: bold;
+  padding: clamp(0.875rem, 2vw, 1rem);
+  font-size: clamp(0.9375rem, 2vw, 1rem);
+  font-weight: 600;
   color: white;
-  background-color: black;
+  background-color: var(--accent-color);
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.button:hover {
-  background-color: #333;
+.button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* Error messages */
 .error-message {
-  color: red;
+  color: var(--error-color);
   margin-top: 0.5rem;
+  font-size: 0.875rem;
 }
 
 /* Responsive styles for mobile */

@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { LayoutGrid, FileDown, User2, Settings, Mail, Phone, Linkedin, Globe, Lock, Save, Edit2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Mail, Phone, Linkedin, Globe, Lock, Save, Edit2, Settings } from "lucide-react";
+import { useTheme } from "../contexts/ThemeContext";
+import SharedNavigation from "./SharedNavigation";
 import axios from "axios";
 
 const Profile = () => {
+  const { isDark } = useTheme();
   const [profile, setProfile] = useState({
     studentName: "",
     email: "",
@@ -210,155 +213,141 @@ const Profile = () => {
       display: "flex",
       minHeight: "100vh",
       fontFamily: "'Inter', sans-serif",
-    },
-    sidebar: {
-      width: "240px",
-      backgroundColor: "#000",
-      color: "white",
-      padding: "1.5rem",
-    },
-    logo: {
-      fontSize: "1.5rem",
-      fontWeight: "700",
-      marginBottom: "2rem",
-    },
-    nav: {
-      display: "flex",
-      flexDirection: "column",
-      gap: "1.5rem",
-    },
-    navItem: {
-      display: "flex",
-      alignItems: "center",
-      gap: "0.75rem",
-      color: "#888",
-      textDecoration: "none",
-      fontSize: "1rem",
-      cursor: "pointer",
-    },
-    activeNavItem: {
-      color: "white",
-      fontWeight: "600",
+      backgroundColor: isDark ? "var(--bg-primary)" : "var(--bg-secondary)",
+      transition: "background-color 0.3s ease",
     },
     main: {
       flex: 1,
-      padding: "2rem",
-      backgroundColor: "#f5f5f5",
+      padding: "clamp(1.5rem, 4vw, 3rem) clamp(1.5rem, 4vw, 4rem)",
+      backgroundColor: isDark ? "var(--bg-primary)" : "#f5f5f7",
       overflowY: "auto",
+      transition: "background-color 0.3s ease",
+      marginLeft: "clamp(0px, 280px, 280px)",
+      width: "calc(100% - clamp(0px, 280px, 280px))",
     },
     title: {
-      fontSize: "2rem",
+      fontSize: "clamp(1.75rem, 4vw, 2rem)",
       fontWeight: "700",
-      marginBottom: "1rem",
-      color: "#333",
+      marginBottom: "clamp(1.5rem, 3vw, 2rem)",
+      color: isDark ? "var(--text-primary)" : "var(--text-primary)",
+      letterSpacing: "-0.5px",
     },
     section: {
-      backgroundColor: "white",
-      borderRadius: "8px",
-      padding: "2rem",
-      marginBottom: "1.5rem",
-      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+      backgroundColor: isDark ? "var(--bg-secondary)" : "#ffffff",
+      borderRadius: "12px",
+      padding: "clamp(1.5rem, 3vw, 2.5rem)",
+      marginBottom: "clamp(1.5rem, 3vw, 2rem)",
+      boxShadow: isDark ? "var(--card-shadow)" : "var(--card-shadow)",
+      border: `1px solid ${isDark ? "var(--border-color)" : "#e0e0e0"}`,
+      transition: "all 0.3s ease",
     },
     sectionTitle: {
-      fontSize: "1.5rem",
+      fontSize: "clamp(1.25rem, 3vw, 1.5rem)",
       fontWeight: "600",
-      marginBottom: "1.5rem",
-      color: "#333",
+      marginBottom: "clamp(1.5rem, 3vw, 2rem)",
+      color: isDark ? "var(--text-primary)" : "var(--text-primary)",
       display: "flex",
       alignItems: "center",
-      gap: "0.5rem",
+      gap: "0.75rem",
     },
     formGroup: {
-      marginBottom: "1.5rem",
+      marginBottom: "1.75rem",
     },
     label: {
       display: "flex",
       alignItems: "center",
-      gap: "0.5rem",
+      gap: "0.625rem",
       fontSize: "0.875rem",
-      fontWeight: "500",
-      color: "#666",
-      marginBottom: "0.5rem",
+      fontWeight: "600",
+      color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
+      marginBottom: "0.75rem",
     },
     input: {
       width: "100%",
-      padding: "0.75rem",
-      border: "1px solid #ddd",
-      borderRadius: "4px",
-      fontSize: "1rem",
-      transition: "border-color 0.2s",
-    },
-    inputFocus: {
-      borderColor: "#000",
+      padding: "clamp(0.875rem, 2vw, 1rem)",
+      border: `1px solid ${isDark ? "var(--border-color)" : "#ddd"}`,
+      borderRadius: "8px",
+      fontSize: "clamp(0.9375rem, 2vw, 1rem)",
+      backgroundColor: isDark ? "var(--bg-tertiary)" : "#ffffff",
+      color: isDark ? "var(--text-primary)" : "var(--text-primary)",
+      transition: "all 0.2s ease",
       outline: "none",
     },
+    inputFocus: {
+      borderColor: isDark ? "#666" : "#999",
+      boxShadow: `0 0 0 3px ${isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.05)"}`,
+    },
     inputDisabled: {
-      backgroundColor: "#f5f5f5",
+      backgroundColor: isDark ? "var(--bg-tertiary)" : "#f5f5f5",
       cursor: "not-allowed",
+      opacity: 0.7,
     },
     button: {
-      padding: "0.75rem 1.5rem",
-      backgroundColor: "#000",
+      padding: "clamp(0.875rem, 2vw, 1rem) clamp(1.75rem, 3vw, 2rem)",
+      backgroundColor: isDark ? "var(--accent-color)" : "#000000",
       color: "white",
       border: "none",
-      borderRadius: "4px",
+      borderRadius: "8px",
       cursor: "pointer",
-      fontSize: "0.875rem",
-      fontWeight: "500",
+      fontSize: "clamp(0.9375rem, 2vw, 1rem)",
+      fontWeight: "600",
       display: "flex",
       alignItems: "center",
-      gap: "0.5rem",
-      transition: "background-color 0.2s",
+      gap: "0.625rem",
+      transition: "all 0.2s ease",
+      boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
     },
     buttonHover: {
-      backgroundColor: "#333",
+      transform: "translateY(-2px)",
+      boxShadow: "0 6px 12px rgba(0,0,0,0.15)",
     },
     buttonSecondary: {
-      backgroundColor: "#666",
+      backgroundColor: isDark ? "#333" : "#666",
     },
     errorMessage: {
-      padding: "0.75rem",
-      backgroundColor: "#ffebee",
-      color: "#c62828",
-      borderRadius: "4px",
-      marginBottom: "1rem",
+      padding: "1rem",
+      backgroundColor: isDark ? "rgba(244, 67, 54, 0.1)" : "#ffebee",
+      color: isDark ? "#ff6b6b" : "#c62828",
+      borderRadius: "8px",
+      marginBottom: "1.5rem",
+      border: `1px solid ${isDark ? "rgba(244, 67, 54, 0.3)" : "#ffcdd2"}`,
     },
     successMessage: {
-      padding: "0.75rem",
-      backgroundColor: "#e8f5e9",
-      color: "#2e7d32",
-      borderRadius: "4px",
-      marginBottom: "1rem",
+      padding: "1rem",
+      backgroundColor: isDark ? "rgba(76, 175, 80, 0.1)" : "#e8f5e9",
+      color: isDark ? "#81c784" : "#2e7d32",
+      borderRadius: "8px",
+      marginBottom: "1.5rem",
+      border: `1px solid ${isDark ? "rgba(76, 175, 80, 0.3)" : "#c8e6c9"}`,
     },
     infoRow: {
       display: "flex",
       alignItems: "center",
-      gap: "0.5rem",
-      marginBottom: "0.5rem",
-      color: "#666",
+      gap: "0.625rem",
+      marginBottom: "0.75rem",
+      color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
+      fontSize: "0.9375rem",
     },
     editButton: {
       marginLeft: "auto",
       backgroundColor: "transparent",
-      border: "1px solid #ddd",
-      color: "#333",
+      border: `1px solid ${isDark ? "var(--border-color)" : "#ddd"}`,
+      color: isDark ? "var(--text-primary)" : "var(--text-primary)",
     },
     buttonContainer: {
       display: "flex",
       gap: "1rem",
-      marginTop: "1.5rem",
+      marginTop: "2rem",
     },
   };
 
   if (loading) {
     return (
       <div style={styles.container}>
-        <aside style={styles.sidebar}>
-          <div style={styles.logo}>PepperUni</div>
-        </aside>
+        <SharedNavigation activePage="profile" />
         <main style={styles.main}>
           <div style={{ textAlign: "center", padding: "3rem" }}>
-            <p style={{ color: "#666" }}>Loading profile...</p>
+            <p style={{ color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)" }}>Loading profile...</p>
           </div>
         </main>
       </div>
@@ -367,23 +356,7 @@ const Profile = () => {
 
   return (
     <div style={styles.container}>
-      <aside style={styles.sidebar}>
-        <div style={styles.logo}>PepperUni</div>
-        <nav style={styles.nav}>
-          <Link to="/resumeupload" style={styles.navItem}>
-            <LayoutGrid /> Home
-          </Link>
-          <Link to="/resume" style={styles.navItem}>
-            <FileDown /> Resume
-          </Link>
-          <div style={{ ...styles.navItem, ...styles.activeNavItem }}>
-            <User2 /> Profile
-          </div>
-          <div style={styles.navItem} onClick={handleLogout}>
-            Logout
-          </div>
-        </nav>
-      </aside>
+      <SharedNavigation activePage="profile" />
       <main style={styles.main}>
         <h1 style={styles.title}>My Profile</h1>
 
@@ -391,7 +364,6 @@ const Profile = () => {
         <div style={styles.section}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
             <h2 style={styles.sectionTitle}>
-              <User2 size={24} />
               Personal Information
             </h2>
             {!isEditing && (
@@ -410,7 +382,6 @@ const Profile = () => {
 
           <div style={styles.formGroup}>
             <label style={styles.label}>
-              <User2 size={16} />
               Full Name
             </label>
             <input

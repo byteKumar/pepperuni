@@ -63,7 +63,9 @@ exports.mainJob = async (req, res) => {
           user_id,
           filename: req.file.originalname || req.file.filename,
           job_title: job_title || "Untitled",
-          resume: editResult.data.editedResume,
+          job_description: job_description || "",
+          original_resume: resumeText, // Store original extracted text
+          resume: editResult.data.editedResume, // Store edited/tailored resume
           score: score,
           created_date: moment().format("YYYY-MM-DD HH:mm:ss"),
         });

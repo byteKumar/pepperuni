@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "../contexts/ThemeContext";
 
 const ResumeBuilder = () => {
+  const { isDark } = useTheme();
   const navigate = useNavigate();
   const [isFadingOut, setIsFadingOut] = useState(false);
 
@@ -29,12 +31,12 @@ const ResumeBuilder = () => {
     alignItems: "center",
     textAlign: "center",
     height: "100vh",
-    backgroundColor: "#121212",
+    backgroundColor: isDark ? "var(--bg-primary)" : "#121212",
     margin: 0,
-    color: "white",
+    color: isDark ? "var(--text-primary)" : "white",
     overflow: "hidden",
     opacity: isFadingOut ? 0 : 1, // Fade out effect
-    transition: "opacity 1s ease-in-out",
+    transition: "opacity 1s ease-in-out, background-color 0.3s ease",
   };
 
   const contentStyle = {
@@ -52,7 +54,7 @@ const ResumeBuilder = () => {
     fontSize: "1rem",
     fontWeight: "normal",
     marginTop: "0.5rem",
-    color: "#bdbdbd",
+    color: isDark ? "var(--text-secondary)" : "#bdbdbd",
   };
 
   const keyframes = `

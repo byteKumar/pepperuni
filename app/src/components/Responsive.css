@@ -1,0 +1,65 @@
+/* Global Responsive Styles */
+
+/* Mobile First - Base Styles (≤768px) */
+@media (max-width: 768px) {
+  /* Main content adjustments */
+  .main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding: 1.5rem 1rem !important;
+  }
+
+  /* Grid layouts */
+  .grid-content {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  /* Cards */
+  .card {
+    padding: 1.5rem !important;
+  }
+
+  /* Buttons */
+  .button-container {
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+
+  .button {
+    width: 100% !important;
+  }
+}
+
+/* Tablet Styles (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .main-content {
+    padding: 2rem 2.5rem !important;
+  }
+
+  .grid-content {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    gap: 2rem !important;
+  }
+}
+
+/* Desktop Styles (≥1025px) */
+@media (min-width: 1025px) {
+  .main-content {
+    padding: 3rem 4rem !important;
+  }
+
+  .grid-content {
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)) !important;
+    gap: 2.5rem !important;
+  }
+}
+
+/* Large Desktop (≥1440px) */
+@media (min-width: 1440px) {
+  .main-content {
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+  }
+}
+

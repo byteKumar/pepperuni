@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useTheme } from "../contexts/ThemeContext";
 import axios from "axios";
 import "./Login.css";
 
 const Login = () => {
+  const { isDark } = useTheme();
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [loginError, setLoginError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -74,7 +76,7 @@ const Login = () => {
                 }
               />
             </div>
-            {loginError && <p style={{ color: "red", marginTop: "0.5rem" }}>{loginError}</p>}
+            {loginError && <p style={{ color: isDark ? "#ff6b6b" : "#c62828", marginTop: "0.75rem", padding: "0.75rem", backgroundColor: isDark ? "rgba(244, 67, 54, 0.1)" : "#ffebee", borderRadius: "8px", border: `1px solid ${isDark ? "rgba(244, 67, 54, 0.3)" : "#ffcdd2"}` }}>{loginError}</p>}
             <button type="submit" className="button" disabled={loading}>
               {loading ? "Signing In..." : "Sign In"}
             </button>

@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { LayoutGrid, FileDown, User2, Download } from "lucide-react";
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { Download } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useTheme } from "../contexts/ThemeContext";
+import SharedNavigation from "./SharedNavigation";
 
 const Response = () => {
+  const { isDark } = useTheme();
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { originalResume, editedResume, score, jobTitle, jobDescription } = location.state || {};
+  const { originalResume, editedResume, score, jobTitle, jobDescription, viewMode: initialViewMode } = location.state || {};
+  const [viewMode, setViewMode] = useState(initialViewMode || "edited");
 
   useEffect(() => {
     // Redirect if no data
@@ -25,24 +29,53 @@ const Response = () => {
       
       // Format headers (lines that are all caps or start with #)
       if (trimmedLine.match(/^#{1,6}\s/) || trimmedLine.match(/^[A-Z\s]{3,}$/)) {
-        return <h3 key={index} style={{ marginTop: "1rem", marginBottom: "0.5rem", fontWeight: "bold" }}>{trimmedLine.replace(/^#+\s/, "")}</h3>;
+        return (
+          <h3 
+            key={index} 
+            style={{ 
+            marginTop: "2rem", 
+            marginBottom: "1rem", 
+            fontWeight: "700", 
+            color: isDark ? "#ffffff" : "#1d1d1f",
+            fontSize: "clamp(1.125rem, 2.5vw, 1.25rem)",
+            letterSpacing: "-0.01em",
+            lineHeight: "1.4"
+          }}
+          >
+            {trimmedLine.replace(/^#+\s/, "")}
+          </h3>
+        );
       }
       
       // Format bold text (**text**)
-      const boldText = trimmedLine.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      const boldText = trimmedLine.replace(/\*\*([^*]+)\*\*/g, '<strong style="font-weight: 600; color: ' + (isDark ? '#ffffff' : '#1d1d1f') + '">$1</strong>');
       
-      return <p key={index} style={{ marginBottom: "0.5rem", lineHeight: "1.6" }} dangerouslySetInnerHTML={{ __html: boldText }} />;
+      return (
+        <p 
+          key={index} 
+          style={{ 
+            marginBottom: "1rem", 
+            lineHeight: "1.75", 
+            color: isDark ? "rgba(255,255,255,0.9)" : "#1d1d1f",
+            fontSize: "clamp(0.9375rem, 2vw, 1rem)"
+          }} 
+          dangerouslySetInnerHTML={{ __html: boldText }} 
+        />
+      );
     });
   };
 
   const handleDownload = () => {
-    if (!editedResume) return;
+    const resumeToDownload = viewMode === "original" ? originalResume : editedResume;
+    const resumeType = viewMode === "original" ? "original" : "tailored";
     
-    const blob = new Blob([editedResume], { type: "text/plain" });
+    if (!resumeToDownload) return;
+    
+    const blob = new Blob([resumeToDownload], { type: "text/plain" });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `resume_${jobTitle || "edited"}_${new Date().getTime()}.txt`;
+    a.download = `resume_${resumeType}_${jobTitle || "resume"}_${new Date().getTime()}.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -53,154 +86,215 @@ const Response = () => {
     container: {
       display: "flex",
       minHeight: "100vh",
-      fontFamily: "'Inter', sans-serif",
-    },
-    sidebar: {
-      width: "240px",
-      backgroundColor: "#000",
-      color: "white",
-      padding: "1.5rem",
-    },
-    logo: {
-      fontSize: "1.5rem",
-      fontWeight: "700",
-      marginBottom: "2rem",
-    },
-    nav: {
-      display: "flex",
-      flexDirection: "column",
-      gap: "1.5rem",
-    },
-    navItem: {
-      display: "flex",
-      alignItems: "center",
-      gap: "0.75rem",
-      color: "#888",
-      textDecoration: "none",
-      fontSize: "1rem",
-    },
-    activeNavItem: {
-      color: "white",
-      fontWeight: "600",
-    },
-    buttonContainer: {
-      display: "flex",
-      justifyContent: "center",
-      marginTop: "2rem",
-    },
-    button: {
-      padding: "0.75rem 2rem",
-      backgroundColor: loading ? "#444" : "#000",
-      color: "white",
-      border: "2px solid white",
-      borderRadius: "8px",
-      cursor: loading ? "not-allowed" : "pointer",
-      fontSize: "1rem",
-      fontWeight: "600",
+      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif",
+      backgroundColor: isDark ? "var(--bg-primary)" : "#f5f5f7",
       transition: "background-color 0.3s ease",
     },
     main: {
       flex: 1,
-      padding: "2rem",
-      backgroundColor: "#f5f5f5",
+      padding: "clamp(1.5rem, 4vw, 3rem) clamp(1.5rem, 4vw, 4rem)",
+      backgroundColor: isDark ? "var(--bg-primary)" : "#f5f5f7",
+      overflowY: "auto",
+      transition: "background-color 0.3s ease",
+      maxWidth: "1400px",
+      margin: "0 auto",
+      marginLeft: "clamp(0px, 280px, 280px)",
+      width: "calc(100% - clamp(0px, 280px, 280px))",
     },
     title: {
-      fontSize: "2rem",
+      fontSize: "clamp(1.75rem, 4vw, 2.25rem)",
       fontWeight: "700",
-      marginBottom: "2rem",
-      color: "#333",
+      marginBottom: "1.5rem",
+      color: isDark ? "#ffffff" : "#1d1d1f",
+      letterSpacing: "-0.02em",
+      lineHeight: "1.1",
+    },
+    scoreContainer: {
+      marginBottom: "clamp(1.5rem, 3vw, 2rem)",
+      padding: "clamp(1.25rem, 3vw, 1.5rem) clamp(1.5rem, 3vw, 2rem)",
+      backgroundColor: isDark ? "rgba(76, 175, 80, 0.15)" : "#e8f5e9",
+      borderRadius: "18px",
+      border: `1px solid ${isDark ? "rgba(76, 175, 80, 0.3)" : "#c8e6c9"}`,
+      backdropFilter: "blur(10px)",
+      transition: "all 0.3s ease",
+      boxShadow: isDark ? "0 4px 20px rgba(0,0,0,0.3)" : "0 2px 8px rgba(0,0,0,0.05)",
+    },
+    scoreTitle: {
+      margin: 0,
+      color: isDark ? "#81c784" : "#2e7d32",
+      fontSize: "clamp(1.25rem, 3vw, 1.375rem)",
+      fontWeight: "600",
+      letterSpacing: "-0.01em",
+    },
+    jobTitleInfo: {
+      marginBottom: "clamp(1.5rem, 3vw, 2.5rem)",
+      padding: "clamp(1rem, 2.5vw, 1.25rem) clamp(1.5rem, 3vw, 1.75rem)",
+      backgroundColor: isDark ? "var(--bg-secondary)" : "#ffffff",
+      borderRadius: "14px",
+      border: `1px solid ${isDark ? "var(--border-color)" : "#e5e5e7"}`,
+      color: isDark ? "var(--text-primary)" : "#1d1d1f",
+      fontSize: "clamp(0.9375rem, 2vw, 1rem)",
+      fontWeight: "500",
+      boxShadow: isDark ? "0 2px 8px rgba(0,0,0,0.2)" : "0 1px 3px rgba(0,0,0,0.08)",
+      transition: "all 0.3s ease",
     },
     textBox: {
-      width: "80%",
-      height: "70vh",
-      padding: "1rem",
-      fontSize: "1rem",
-      fontFamily: "'Inter', sans-serif",
-      lineHeight: "1.5",
-      border: "1px solid #ccc",
-      borderRadius: "8px",
+      width: "100%",
+      minHeight: "clamp(400px, 60vh, 600px)",
+      padding: "clamp(1.5rem, 4vw, 2.5rem) clamp(1.5rem, 4vw, 3rem)",
+      fontSize: "clamp(0.9375rem, 2vw, 1rem)",
+      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', 'Roboto', sans-serif",
+      lineHeight: "1.75",
+      border: `1px solid ${isDark ? "var(--border-color)" : "#e5e5e7"}`,
+      borderRadius: "18px",
       overflowY: "auto",
       whiteSpace: "pre-wrap",
-      backgroundColor: "#fff",
+      backgroundColor: isDark ? "var(--bg-secondary)" : "#ffffff",
+      color: isDark ? "var(--text-primary)" : "#1d1d1f",
+      boxShadow: isDark ? "0 4px 20px rgba(0,0,0,0.3)" : "0 2px 8px rgba(0,0,0,0.05)",
+      transition: "all 0.3s ease",
+      marginBottom: "2rem",
+    },
+    sectionTitle: {
+      marginTop: 0,
+      marginBottom: "2rem",
+      color: isDark ? "#ffffff" : "#1d1d1f",
+      fontSize: "clamp(1.375rem, 3vw, 1.625rem)",
+      fontWeight: "700",
+      letterSpacing: "-0.01em",
+      borderBottom: `2px solid ${isDark ? "rgba(255,255,255,0.1)" : "#e5e5e7"}`,
+      paddingBottom: "1rem",
+    },
+    buttonContainer: {
+      display: "flex",
+      justifyContent: "center",
+      marginTop: "3rem",
+    },
+    button: {
+      padding: "clamp(0.875rem, 2vw, 1rem) clamp(2rem, 4vw, 2.5rem)",
+      backgroundColor: isDark ? "#ffffff" : "#1d1d1f",
+      color: isDark ? "#1d1d1f" : "#ffffff",
+      border: "none",
+      borderRadius: "12px",
+      cursor: "pointer",
+      fontSize: "clamp(0.9375rem, 2vw, 1rem)",
+      fontWeight: "600",
+      display: "flex",
+      alignItems: "center",
+      gap: "0.75rem",
+      transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+      boxShadow: isDark ? "0 4px 16px rgba(255,255,255,0.1)" : "0 4px 16px rgba(0,0,0,0.15)",
+      letterSpacing: "-0.01em",
+    },
+    buttonHover: {
+      transform: "translateY(-2px) scale(1.02)",
+      boxShadow: isDark ? "0 6px 24px rgba(255,255,255,0.15)" : "0 6px 24px rgba(0,0,0,0.2)",
+    },
+    tabsContainer: {
+      display: "flex",
+      gap: "0.75rem",
+      marginBottom: "2rem",
+      borderBottom: `2px solid ${isDark ? "rgba(255,255,255,0.1)" : "#e5e5e7"}`,
+      paddingBottom: "0.5rem",
+    },
+    tab: {
+      padding: "0.75rem 1.5rem",
+      backgroundColor: "transparent",
+      color: isDark ? "rgba(255,255,255,0.7)" : "#86868b",
+      border: "none",
+      borderRadius: "8px 8px 0 0",
+      cursor: "pointer",
+      fontSize: "clamp(0.9375rem, 2vw, 1rem)",
+      fontWeight: "500",
+      transition: "all 0.2s ease",
+      borderBottom: "2px solid transparent",
+      marginBottom: "-2px",
+    },
+    tabActive: {
+      color: isDark ? "#ffffff" : "#1d1d1f",
+      fontWeight: "600",
+      borderBottomColor: isDark ? "#ffffff" : "#1d1d1f",
+      backgroundColor: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.02)",
     },
   };
 
   return (
     <div style={styles.container}>
-      <aside style={styles.sidebar}>
-        <div style={styles.logo}>PepperUni</div>
-        <nav style={styles.nav}>
-          <Link to="/resumeupload" style={styles.navItem}>
-            <LayoutGrid /> Home
-          </Link>
-          <Link to="/resume" style={styles.navItem}>
-            <FileDown /> Resume
-          </Link>
-          <Link to="/profile" style={styles.navItem}>
-            <User2 /> Profile
-          </Link>
-          <div
-            style={styles.navItem}
-            onClick={() => {
-              localStorage.removeItem("token");
-              localStorage.removeItem("user");
-              navigate("/login");
-            }}
-          >
-            Logout
-          </div>
-        </nav>
-      </aside>
+      <SharedNavigation activePage="home" />
       <main style={styles.main}>
         <h1 style={styles.title}>Resume Analysis & Tailored Resume</h1>
         
         {score && score !== "N/A" && (
-          <div style={{ 
-            marginBottom: "1.5rem", 
-            padding: "1rem", 
-            backgroundColor: "#e8f5e9", 
-            borderRadius: "8px",
-            border: "2px solid #4caf50"
-          }}>
-            <h2 style={{ margin: 0, color: "#2e7d32", fontSize: "1.25rem" }}>
+          <div style={styles.scoreContainer}>
+            <h2 style={styles.scoreTitle}>
               Total Score: {score}/100
             </h2>
           </div>
         )}
 
         {jobTitle && (
-          <div style={{ marginBottom: "1rem", color: "#666" }}>
-            <strong>Job Title:</strong> {jobTitle}
+          <div style={styles.jobTitleInfo}>
+            <strong style={{ color: isDark ? "#ffffff" : "#1d1d1f", fontWeight: "600" }}>Job Title:</strong> {jobTitle}
           </div>
         )}
 
         {editedResume ? (
           <>
-            <div style={{ ...styles.textBox, marginBottom: "1.5rem" }}>
-              <h2 style={{ marginTop: 0, marginBottom: "1rem", color: "#333" }}>
+            <div style={styles.tabsContainer}>
+              <button
+                style={{
+                  ...styles.tab,
+                  ...(viewMode !== "original" && styles.tabActive),
+                }}
+                onClick={() => setViewMode("edited")}
+              >
                 AI-Tailored Resume
+              </button>
+              {originalResume && (
+                <button
+                  style={{
+                    ...styles.tab,
+                    ...(viewMode === "original" && styles.tabActive),
+                  }}
+                  onClick={() => setViewMode("original")}
+                >
+                  Original Resume
+                </button>
+              )}
+            </div>
+
+            <div style={styles.textBox}>
+              <h2 style={styles.sectionTitle}>
+                {viewMode === "original" ? "Original Resume" : "AI-Tailored Resume"}
               </h2>
-              {processResumeText(editedResume)}
+              {processResumeText(viewMode === "original" ? originalResume : editedResume)}
             </div>
             
             <div style={styles.buttonContainer}>
               <button
-                style={{ ...styles.button, display: "flex", alignItems: "center", gap: "0.5rem" }}
+                style={styles.button}
                 onClick={handleDownload}
+                onMouseEnter={(e) => {
+                  Object.assign(e.currentTarget.style, styles.buttonHover);
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = isDark ? "0 4px 16px rgba(255,255,255,0.1)" : "0 4px 16px rgba(0,0,0,0.15)";
+                }}
               >
-                <Download size={20} /> Download Resume
+                <Download size={20} /> Download {viewMode === "original" ? "Original" : "Tailored"} Resume
               </button>
             </div>
           </>
         ) : originalResume ? (
           <div style={styles.textBox}>
-            <h2 style={{ marginTop: 0, marginBottom: "1rem", color: "#333" }}>
+            <h2 style={styles.sectionTitle}>
               Original Resume
             </h2>
             {processResumeText(originalResume)}
           </div>
         ) : (
-          <p>No resume available.</p>
+          <p style={{ color: isDark ? "rgba(255,255,255,0.7)" : "#86868b", fontSize: "clamp(0.9375rem, 2vw, 1rem)" }}>No resume available.</p>
         )}
       </main>
     </div>

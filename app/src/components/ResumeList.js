@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { LayoutGrid, FileDown, User2, Download, Calendar, TrendingUp } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Download, Calendar, TrendingUp, FileText } from "lucide-react";
+import { useTheme } from "../contexts/ThemeContext";
+import SharedNavigation from "./SharedNavigation";
 import axios from "axios";
 
 const ResumeList = () => {
+  const { isDark } = useTheme();
   const [resumes, setResumes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -109,9 +112,10 @@ const ResumeList = () => {
     navigate("/response", {
       state: {
         editedResume: resumeData.resume,
+        originalResume: resumeData.original_resume || null,
         score: resumeData.score,
         jobTitle: resumeData.job_title,
-        originalResume: null,
+        jobDescription: resumeData.job_description || "",
       },
     });
   };
@@ -136,51 +140,29 @@ const ResumeList = () => {
       display: "flex",
       minHeight: "100vh",
       fontFamily: "'Inter', sans-serif",
-    },
-    sidebar: {
-      width: "240px",
-      backgroundColor: "#000",
-      color: "white",
-      padding: "1.5rem",
-    },
-    logo: {
-      fontSize: "1.5rem",
-      fontWeight: "700",
-      marginBottom: "2rem",
-    },
-    nav: {
-      display: "flex",
-      flexDirection: "column",
-      gap: "1.5rem",
-    },
-    navItem: {
-      display: "flex",
-      alignItems: "center",
-      gap: "0.75rem",
-      color: "#888",
-      textDecoration: "none",
-      fontSize: "1rem",
-      cursor: "pointer",
-    },
-    activeNavItem: {
-      color: "white",
-      fontWeight: "600",
+      backgroundColor: isDark ? "var(--bg-primary)" : "var(--bg-secondary)",
+      transition: "background-color 0.3s ease",
     },
     main: {
       flex: 1,
-      padding: "2rem",
-      backgroundColor: "#f5f5f5",
+      padding: "clamp(1.5rem, 4vw, 3rem) clamp(1.5rem, 4vw, 4rem)",
+      backgroundColor: isDark ? "var(--bg-primary)" : "#f5f5f7",
+      overflowY: "auto",
+      transition: "background-color 0.3s ease",
+      marginLeft: "clamp(0px, 280px, 280px)",
+      width: "calc(100% - clamp(0px, 280px, 280px))",
     },
     title: {
-      fontSize: "2rem",
+      fontSize: "clamp(1.75rem, 4vw, 2rem)",
       fontWeight: "700",
-      marginBottom: "1rem",
-      color: "#333",
+      marginBottom: "0.5rem",
+      color: isDark ? "var(--text-primary)" : "var(--text-primary)",
+      letterSpacing: "-0.5px",
     },
     subtitle: {
-      fontSize: "1rem",
-      color: "#666",
-      marginBottom: "2rem",
+      fontSize: "clamp(1rem, 2.5vw, 1.0625rem)",
+      color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
+      marginBottom: "clamp(1.5rem, 3vw, 2.5rem)",
     },
     loadingContainer: {
       display: "flex",
@@ -189,129 +171,112 @@ const ResumeList = () => {
       minHeight: "400px",
     },
     errorContainer: {
-      padding: "1rem",
-      backgroundColor: "#ffebee",
-      color: "#c62828",
-      borderRadius: "8px",
-      marginBottom: "1rem",
+      padding: "1.25rem",
+      backgroundColor: isDark ? "rgba(244, 67, 54, 0.1)" : "#ffebee",
+      color: isDark ? "#ff6b6b" : "#c62828",
+      borderRadius: "12px",
+      marginBottom: "1.5rem",
+      border: `1px solid ${isDark ? "rgba(244, 67, 54, 0.3)" : "#ffcdd2"}`,
     },
     emptyState: {
       textAlign: "center",
-      padding: "3rem",
-      color: "#666",
+      padding: "4rem 2rem",
+      color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
     },
     resumeGrid: {
       display: "grid",
-      gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))",
-      gap: "1.5rem",
+      gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 320px), 1fr))",
+      gap: "clamp(1.5rem, 3vw, 2rem)",
     },
     resumeCard: {
-      backgroundColor: "white",
-      borderRadius: "8px",
-      padding: "1.5rem",
-      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+      backgroundColor: isDark ? "var(--bg-secondary)" : "#ffffff",
+      borderRadius: "12px",
+      padding: "clamp(1.5rem, 3vw, 2rem)",
+      boxShadow: isDark ? "var(--card-shadow)" : "var(--card-shadow)",
       cursor: "pointer",
-      transition: "transform 0.2s, box-shadow 0.2s",
-      border: "1px solid #e0e0e0",
+      transition: "all 0.3s ease",
+      border: `1px solid ${isDark ? "var(--border-color)" : "#e0e0e0"}`,
     },
     resumeCardHover: {
-      transform: "translateY(-2px)",
-      boxShadow: "0 4px 8px rgba(0,0,0,0.15)",
+      transform: "translateY(-4px)",
+      boxShadow: isDark ? "var(--card-hover-shadow)" : "var(--card-hover-shadow)",
     },
     resumeHeader: {
       display: "flex",
       justifyContent: "space-between",
       alignItems: "flex-start",
-      marginBottom: "1rem",
+      marginBottom: "1.25rem",
     },
     resumeTitle: {
-      fontSize: "1.25rem",
+      fontSize: "clamp(1.125rem, 2.5vw, 1.25rem)",
       fontWeight: "600",
-      color: "#333",
+      color: isDark ? "var(--text-primary)" : "var(--text-primary)",
       margin: 0,
       flex: 1,
+      lineHeight: "1.4",
     },
     scoreBadge: {
-      padding: "0.5rem 1rem",
-      borderRadius: "20px",
+      padding: "clamp(0.5rem, 1.5vw, 0.625rem) clamp(1rem, 2vw, 1.25rem)",
+      borderRadius: "24px",
       color: "white",
       fontWeight: "600",
-      fontSize: "0.875rem",
+      fontSize: "clamp(0.8125rem, 1.5vw, 0.875rem)",
       display: "flex",
       alignItems: "center",
-      gap: "0.25rem",
+      gap: "0.375rem",
+      boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
     },
     resumeMeta: {
       display: "flex",
       flexDirection: "column",
-      gap: "0.5rem",
-      marginBottom: "1rem",
+      gap: "0.75rem",
+      marginBottom: "1.25rem",
     },
     metaItem: {
       display: "flex",
       alignItems: "center",
-      gap: "0.5rem",
-      color: "#666",
+      gap: "0.625rem",
+      color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
       fontSize: "0.875rem",
     },
     resumePreview: {
-      color: "#666",
+      color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
       fontSize: "0.875rem",
-      lineHeight: "1.5",
-      maxHeight: "100px",
+      lineHeight: "1.6",
+      maxHeight: "120px",
       overflow: "hidden",
       textOverflow: "ellipsis",
-      marginBottom: "1rem",
+      marginBottom: "1.25rem",
     },
     resumeActions: {
       display: "flex",
-      gap: "0.5rem",
+      gap: "0.75rem",
       justifyContent: "flex-end",
     },
     actionButton: {
-      padding: "0.5rem 1rem",
-      backgroundColor: "#000",
-      color: "white",
+      padding: "clamp(0.625rem, 1.5vw, 0.75rem) clamp(1.25rem, 2vw, 1.5rem)",
+      backgroundColor: isDark ? "#ffffff" : "#000000",
+      color: isDark ? "#1d1d1f" : "#ffffff",
       border: "none",
-      borderRadius: "4px",
+      borderRadius: "8px",
       cursor: "pointer",
-      fontSize: "0.875rem",
+      fontSize: "clamp(0.8125rem, 1.5vw, 0.875rem)",
+      fontWeight: "600",
       display: "flex",
       alignItems: "center",
       gap: "0.5rem",
-      transition: "background-color 0.2s",
+      transition: "all 0.2s ease",
+      boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
     },
     actionButtonHover: {
-      backgroundColor: "#333",
+      transform: "translateY(-2px)",
+      boxShadow: "0 4px 8px rgba(0,0,0,0.3)",
     },
   };
 
   return (
     <div style={styles.container}>
-      <aside style={styles.sidebar}>
-        <div style={styles.logo}>PepperUni</div>
-        <nav style={styles.nav}>
-          <Link to="/resumeupload" style={styles.navItem}>
-            <LayoutGrid /> Home
-          </Link>
-          <div style={{ ...styles.navItem, ...styles.activeNavItem }}>
-            <FileDown /> Resume
-          </div>
-          <Link to="/profile" style={styles.navItem}>
-            <User2 /> Profile
-          </Link>
-          <div
-            style={styles.navItem}
-            onClick={() => {
-              localStorage.removeItem("token");
-              localStorage.removeItem("user");
-              navigate("/login");
-            }}
-          >
-            Logout
-          </div>
-        </nav>
-      </aside>
+      <SharedNavigation activePage="resume" />
       <main style={styles.main}>
         <h1 style={styles.title}>My Resumes</h1>
         <p style={styles.subtitle}>
@@ -320,7 +285,9 @@ const ResumeList = () => {
 
         {loading ? (
           <div style={styles.loadingContainer}>
-            <p style={{ color: "#666", fontSize: "1.125rem" }}>Loading resumes...</p>
+            <p style={{ color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)", fontSize: "1.125rem" }}>
+              Loading resumes...
+            </p>
           </div>
         ) : error ? (
           <div style={styles.errorContainer}>
@@ -328,28 +295,35 @@ const ResumeList = () => {
           </div>
         ) : resumes.length === 0 ? (
           <div style={styles.emptyState}>
-            <FileDown size={64} style={{ marginBottom: "1rem", color: "#ccc" }} />
-            <h2 style={{ color: "#666", marginBottom: "0.5rem" }}>
+            <FileText size={80} style={{ marginBottom: "1.5rem", color: isDark ? "var(--text-tertiary)" : "#ccc", opacity: 0.5 }} />
+            <h2 style={{ color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)", marginBottom: "0.75rem", fontSize: "1.5rem" }}>
               No resumes yet
             </h2>
-            <p style={{ color: "#999", marginBottom: "1.5rem" }}>
+            <p style={{ color: isDark ? "var(--text-tertiary)" : "#999", marginBottom: "2rem", fontSize: "1rem" }}>
               Start by uploading and tailoring your first resume!
             </p>
-            <Link
-              to="/resumeupload"
+            <button
+              onClick={() => navigate("/resumeupload")}
               style={{
                 ...styles.actionButton,
-                textDecoration: "none",
                 display: "inline-flex",
               }}
+              onMouseEnter={(e) => {
+                Object.assign(e.currentTarget.style, styles.actionButtonHover);
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";
+              }}
             >
+              <FileText size={18} />
               Upload Resume
-            </Link>
+            </button>
           </div>
         ) : (
           <>
-            <div style={{ marginBottom: "1rem", color: "#666" }}>
-              Total Resumes: <strong>{resumes.length}</strong>
+            <div style={{ marginBottom: "1.5rem", color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)", fontSize: "1rem" }}>
+              Total Resumes: <strong style={{ color: isDark ? "var(--text-primary)" : "var(--text-primary)" }}>{resumes.length}</strong>
             </div>
             <div style={styles.resumeGrid}>
               {resumes.map((resume, index) => (
@@ -358,12 +332,11 @@ const ResumeList = () => {
                   style={styles.resumeCard}
                   onClick={() => handleViewResume(resume)}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "translateY(-2px)";
-                    e.currentTarget.style.boxShadow = "0 4px 8px rgba(0,0,0,0.15)";
+                    Object.assign(e.currentTarget.style, styles.resumeCardHover);
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)";
+                    e.currentTarget.style.boxShadow = isDark ? "var(--card-shadow)" : "var(--card-shadow)";
                   }}
                 >
                   <div style={styles.resumeHeader}>
@@ -390,7 +363,7 @@ const ResumeList = () => {
                     </div>
                     {resume.filename && (
                       <div style={styles.metaItem}>
-                        <FileDown size={16} />
+                        <FileText size={16} />
                         {resume.filename}
                       </div>
                     )}
@@ -407,13 +380,14 @@ const ResumeList = () => {
                       style={styles.actionButton}
                       onClick={(e) => handleDownload(resume, e)}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = "#333";
+                        Object.assign(e.currentTarget.style, styles.actionButtonHover);
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = "#000";
+                        e.currentTarget.style.transform = "translateY(0)";
+                        e.currentTarget.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";
                       }}
                     >
-                      <Download size={16} />
+                      <Download size={18} />
                       Download
                     </button>
                   </div>
