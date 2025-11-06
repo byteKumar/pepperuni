@@ -561,17 +561,17 @@ const Profile = () => {
                 Current Password
               </label>
               <div style={{ position: "relative" }}>
-                <input
+              <input
                   type={showCurrentPassword ? "text" : "password"}
-                  value={passwordData.currentPassword}
-                  onChange={(e) => {
-                    setPasswordData({ ...passwordData, currentPassword: e.target.value });
-                    setPasswordError("");
-                    setPasswordSuccess("");
-                  }}
+                value={passwordData.currentPassword}
+                onChange={(e) => {
+                  setPasswordData({ ...passwordData, currentPassword: e.target.value });
+                  setPasswordError("");
+                  setPasswordSuccess("");
+                }}
                   style={{ ...styles.input, paddingRight: "2.75rem" }}
-                  required
-                />
+                required
+              />
                 <button
                   type="button"
                   onClick={() => setShowCurrentPassword(!showCurrentPassword)}
@@ -610,18 +610,18 @@ const Profile = () => {
                 New Password
               </label>
               <div style={{ position: "relative" }}>
-                <input
+              <input
                   type={showNewPassword ? "text" : "password"}
-                  value={passwordData.newPassword}
-                  onChange={(e) => {
-                    setPasswordData({ ...passwordData, newPassword: e.target.value });
-                    setPasswordError("");
-                    setPasswordSuccess("");
-                  }}
+                value={passwordData.newPassword}
+                onChange={(e) => {
+                  setPasswordData({ ...passwordData, newPassword: e.target.value });
+                  setPasswordError("");
+                  setPasswordSuccess("");
+                }}
                   style={{ ...styles.input, paddingRight: "2.75rem" }}
-                  required
-                  minLength={6}
-                />
+                required
+                minLength={6}
+              />
                 <button
                   type="button"
                   onClick={() => setShowNewPassword(!showNewPassword)}
@@ -660,18 +660,18 @@ const Profile = () => {
                 Confirm New Password
               </label>
               <div style={{ position: "relative" }}>
-                <input
+              <input
                   type={showConfirmPassword ? "text" : "password"}
-                  value={passwordData.confirmPassword}
-                  onChange={(e) => {
-                    setPasswordData({ ...passwordData, confirmPassword: e.target.value });
-                    setPasswordError("");
-                    setPasswordSuccess("");
-                  }}
+                value={passwordData.confirmPassword}
+                onChange={(e) => {
+                  setPasswordData({ ...passwordData, confirmPassword: e.target.value });
+                  setPasswordError("");
+                  setPasswordSuccess("");
+                }}
                   style={{ ...styles.input, paddingRight: "2.75rem" }}
-                  required
-                  minLength={6}
-                />
+                required
+                minLength={6}
+              />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}

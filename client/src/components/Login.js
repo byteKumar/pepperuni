@@ -72,39 +72,39 @@ const Login = () => {
       </div>
       <div className="right-section">
         <div className="form-container">
-          <div className="form">
-            <h2 className="title">Sign In</h2>
-            <p className="subtitle">
+        <div className="form">
+          <h2 className="title">Sign In</h2>
+          <p className="subtitle">
               Don't have an account? <Link to="/signup">Create an Account</Link>
-            </p>
-            <form onSubmit={handleLogin}>
-              <div className="input-group">
-                <label htmlFor="email">Email Address*</label>
-                <input
-                  id="email"
-                  type="email"
-                  placeholder="xxxx@northeastern.edu"
-                  required
-                  value={loginData.email}
-                  onChange={(e) =>
-                    setLoginData({ ...loginData, email: e.target.value })
-                  }
-                />
-              </div>
-              <div className="input-group">
-                <label htmlFor="password">Password*</label>
+          </p>
+          <form onSubmit={handleLogin}>
+            <div className="input-group">
+              <label htmlFor="email">Email Address*</label>
+              <input
+                id="email"
+                type="email"
+                placeholder="xxxx@northeastern.edu"
+                required
+                value={loginData.email}
+                onChange={(e) =>
+                  setLoginData({ ...loginData, email: e.target.value })
+                }
+              />
+            </div>
+            <div className="input-group">
+              <label htmlFor="password">Password*</label>
                 <div style={{ position: "relative" }}>
-                  <input
-                    id="password"
+              <input
+                id="password"
                     type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
-                    required
-                    value={loginData.password}
-                    onChange={(e) =>
-                      setLoginData({ ...loginData, password: e.target.value })
-                    }
+                placeholder="Enter your password"
+                required
+                value={loginData.password}
+                onChange={(e) =>
+                  setLoginData({ ...loginData, password: e.target.value })
+                }
                     style={{ paddingRight: "2.75rem" }}
-                  />
+              />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
@@ -135,13 +135,13 @@ const Login = () => {
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                   </button>
                 </div>
-              </div>
+            </div>
               {loginError && <p style={{ color: isDark ? "#ff6b6b" : "#c62828", marginTop: "0.75rem", padding: "0.75rem", backgroundColor: isDark ? "rgba(244, 67, 54, 0.1)" : "#ffebee", borderRadius: "8px", border: `1px solid ${isDark ? "rgba(244, 67, 54, 0.3)" : "#ffcdd2"}`, fontSize: "0.875rem" }}>{loginError}</p>}
-              <button type="submit" className="button" disabled={loading}>
-                {loading ? "Signing In..." : "Sign In"}
-              </button>
-            </form>
-          </div>
+            <button type="submit" className="button" disabled={loading}>
+              {loading ? "Signing In..." : "Sign In"}
+            </button>
+          </form>
+        </div>
         </div>
       </div>
     </div>

@@ -320,10 +320,10 @@ const Response = () => {
             </div>
             <div style={styles.scoreContent}>
               <p style={styles.scoreLabel}>Total Score</p>
-              <h2 style={styles.scoreTitle}>
+            <h2 style={styles.scoreTitle}>
                 <span style={styles.scoreValue}>{score}</span>
                 <span style={{ fontSize: "clamp(1.375rem, 3.5vw, 1.875rem)", opacity: 0.7 }}>/100</span>
-              </h2>
+            </h2>
             </div>
           </div>
         )}

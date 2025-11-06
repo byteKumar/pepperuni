@@ -48,18 +48,18 @@ mongoose
     console.log("MongoDB connected successfully");
     
     // Mount routes after MongoDB connection
-    app.use("/api/auth", authRoutes);
-    app.use("/api/profile", profileRoutes);
-    app.use("/api", resumeRoutes);
-    app.use("/api/resumes", editResumeRoutes);
-    
+app.use("/api/auth", authRoutes);
+app.use("/api/profile", profileRoutes);
+app.use("/api", resumeRoutes);
+app.use("/api/resumes", editResumeRoutes);
+
     // Start server only after MongoDB connection
-    app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
     });
   })
   .catch((err) => {
     console.error("MongoDB connection error:", err);
     console.error("Please check your MONGODB_URI in the .env file");
     process.exit(1); // Exit if MongoDB connection fails
-  });
+});

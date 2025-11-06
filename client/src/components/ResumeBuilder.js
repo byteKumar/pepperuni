@@ -58,13 +58,13 @@ const ResumeBuilder = () => {
     },
     mainContent: {
       display: "grid",
-      gridTemplateColumns: "1fr 1.1fr",
+      gridTemplateColumns: "50% 50%",
       flex: 1,
       alignItems: "center",
-      gap: "clamp(1.25rem, 3vw, 2rem)",
-      padding: "clamp(1rem, 2.5vw, 1.5rem) clamp(1.25rem, 3vw, 2rem)",
-      maxWidth: "1400px",
-      margin: "0 auto",
+      gap: 0,
+      padding: 0,
+      maxWidth: "none",
+      margin: 0,
       width: "100%",
       minHeight: 0,
       overflow: "visible",
@@ -76,6 +76,7 @@ const ResumeBuilder = () => {
       gap: "clamp(0.75rem, 1.5vw, 1rem)",
       animation: "fadeInLeft 0.8s ease-out",
       minHeight: 0,
+      padding: "clamp(1rem, 2.5vw, 1.5rem) clamp(1.25rem, 3vw, 2rem)",
     },
     badge: {
       display: "inline-block",
@@ -157,18 +158,20 @@ const ResumeBuilder = () => {
     },
     rightSection: {
       display: "flex",
-      alignItems: "center",
+      alignItems: "flex-start",
       justifyContent: "flex-start",
       animation: "fadeInRight 0.8s ease-out",
       minHeight: 0,
-      overflow: "visible",
+      overflow: "hidden",
       position: "relative",
+      width: "100%",
+      padding: 0,
     },
     imageContainer: {
       width: "100%",
       maxWidth: "none",
       maxHeight: "calc(100vh - 80px)",
-      borderRadius: "10px",
+      borderRadius: "0",
       overflow: "visible",
       boxShadow: isDark 
         ? "0 20px 60px rgba(255,255,255,0.1)" 
@@ -184,6 +187,7 @@ const ResumeBuilder = () => {
       maxHeight: "calc(100vh - 80px)",
       display: "block",
       objectFit: "contain",
+      objectPosition: "left center",
       transform: "scale(1.3)",
       transformOrigin: "left center",
     },
@@ -315,7 +319,7 @@ const ResumeBuilder = () => {
           <div className="right-section" style={styles.rightSection}>
             <div style={styles.imageContainer}>
               <img 
-                src="/frontPage.png" 
+                src={process.env.PUBLIC_URL ? `${process.env.PUBLIC_URL}/frontPage.png` : '/frontPage.png'} 
                 alt="Resume Analysis Dashboard" 
                 style={styles.image}
               />

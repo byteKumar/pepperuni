@@ -378,15 +378,15 @@ const ResumeList = () => {
                       
                       if (displayScore && displayScore !== "N/A" && displayScore !== null) {
                         return (
-                          <div
-                            style={{
-                              ...styles.scoreBadge,
+                      <div
+                        style={{
+                          ...styles.scoreBadge,
                               backgroundColor: getScoreColor(displayScore),
-                            }}
-                          >
-                            <TrendingUp size={16} />
+                        }}
+                      >
+                        <TrendingUp size={16} />
                             {displayScore}/100
-                          </div>
+                      </div>
                         );
                       }
                       return null;
