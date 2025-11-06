@@ -4,6 +4,7 @@ import { Download, Calendar, TrendingUp, FileText } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
 import SharedNavigation from "./SharedNavigation";
 import axios from "axios";
+import API_BASE_URL from "../config/api";
 
 const ResumeList = () => {
   const { isDark } = useTheme();
@@ -52,7 +53,7 @@ const ResumeList = () => {
     try {
       console.log("Fetching resumes for user:", userId);
       const response = await axios.get(
-        `http://localhost:5001/api/resumes/user/${userId}`,
+        `${API_BASE_URL}/api/resumes/user/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

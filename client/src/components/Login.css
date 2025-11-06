@@ -153,13 +153,23 @@ body {
   padding: clamp(0.875rem, 2vw, 1rem);
   font-size: clamp(0.9375rem, 2vw, 1rem);
   font-weight: 600;
-  color: white;
-  background-color: var(--accent-color);
   border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark theme button */
+[data-theme="dark"] .button {
+  background-color: #ffffff;
+  color: #1d1d1f;
+}
+
+/* Light theme button */
+[data-theme="light"] .button {
+  background-color: #1d1d1f;
+  color: #ffffff;
 }
 
 .button:hover:not(:disabled) {

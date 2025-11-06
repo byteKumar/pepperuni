@@ -4,6 +4,7 @@ import { CloudIcon, Upload, Sparkles, Loader2 } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
 import SharedNavigation from "./SharedNavigation";
 import axios from "axios";
+import API_BASE_URL from "../config/api";
 
 const ResumeUpload = () => {
   const { isDark } = useTheme();
@@ -60,7 +61,7 @@ const ResumeUpload = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5001/api/main_job",
+        `${API_BASE_URL}/api/main_job`,
         formData,
         {
           headers: {

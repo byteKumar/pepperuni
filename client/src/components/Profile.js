@@ -4,6 +4,7 @@ import { Mail, Phone, Linkedin, Globe, Lock, Save, Edit2, Settings } from "lucid
 import { useTheme } from "../contexts/ThemeContext";
 import SharedNavigation from "./SharedNavigation";
 import axios from "axios";
+import API_BASE_URL from "../config/api";
 
 const Profile = () => {
   const { isDark } = useTheme();
@@ -55,7 +56,7 @@ const Profile = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:5001/api/profile/${userId}`,
+        `${API_BASE_URL}/api/profile/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -99,7 +100,7 @@ const Profile = () => {
     try {
       const user = JSON.parse(userStr);
       const response = await axios.put(
-        `http://localhost:5001/api/profile/${user.id}`,
+        `${API_BASE_URL}/api/profile/${user.id}`,
         profile,
         {
           headers: {
@@ -158,7 +159,7 @@ const Profile = () => {
     try {
       const user = JSON.parse(userStr);
       const response = await axios.post(
-        `http://localhost:5001/api/profile/${user.id}/change-password`,
+        `${API_BASE_URL}/api/profile/${user.id}/change-password`,
         {
           currentPassword: passwordData.currentPassword,
           newPassword: passwordData.newPassword,
