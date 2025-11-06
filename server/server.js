@@ -41,10 +41,6 @@ const mongooseOptions = {
   connectTimeoutMS: 30000, // 30 seconds connection timeout
 };
 
-// Disable mongoose buffering globally (fail fast instead of queueing)
-mongoose.set('bufferCommands', false);
-mongoose.set('bufferMaxEntries', 0);
-
 // Connect to MongoDB before starting the server
 mongoose
   .connect(process.env.MONGODB_URI, mongooseOptions)
