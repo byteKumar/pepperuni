@@ -98,8 +98,8 @@ const Response = () => {
       transition: "background-color 0.3s ease",
       maxWidth: "1400px",
       margin: "0 auto",
-      marginLeft: "clamp(0px, 280px, 280px)",
-      width: "calc(100% - clamp(0px, 280px, 280px))",
+      marginLeft: "30%",
+      width: "70%",
     },
     title: {
       fontSize: "clamp(1.5rem, 3.5vw, 2rem)",

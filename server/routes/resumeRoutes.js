@@ -2,7 +2,8 @@ const express = require("express");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
-const { mainJob, getUserResumes } = require("../controllers/resumeController.js");
+const { mainJob, getUserResumes, deleteResume } = require("../controllers/resumeController.js");
+const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -46,5 +47,9 @@ router.post("/main_job", upload.single("file"), mainJob);
 // Define the route to get user resumes
 // This route is at /api/resumes/user/:user_id
 router.get("/resumes/user/:user_id", getUserResumes);
+
+// Define the route to delete a resume
+// This route is at /api/resumes/:resume_id
+router.delete("/resumes/:resume_id", authMiddleware, deleteResume);
 
 module.exports = router;

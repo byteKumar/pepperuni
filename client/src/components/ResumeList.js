@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Download, Calendar, TrendingUp, FileText } from "lucide-react";
+import { Download, Calendar, TrendingUp, FileText, Trash2, X } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
 import SharedNavigation from "./SharedNavigation";
 import axios from "axios";
@@ -11,6 +11,8 @@ const ResumeList = () => {
   const [resumes, setResumes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [deleteConfirm, setDeleteConfirm] = useState(null); // { resumeId, resumeTitle }
+  const [deleting, setDeleting] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -161,11 +163,64 @@ const ResumeList = () => {
     window.URL.revokeObjectURL(url);
   };
 
+  const handleDeleteClick = (resumeData, e) => {
+    e.stopPropagation();
+    setDeleteConfirm({
+      resumeId: resumeData._id,
+      resumeTitle: resumeData.job_title || "Untitled Resume",
+    });
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!deleteConfirm) return;
+
+    setDeleting(true);
+    const token = localStorage.getItem("token");
+    const userStr = localStorage.getItem("user");
+
+    try {
+      const response = await axios.delete(
+        `${API_BASE_URL}/api/resumes/${deleteConfirm.resumeId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data.status === "success") {
+        // Remove the deleted resume from the list
+        setResumes((prevResumes) =>
+          prevResumes.filter((r) => r._id !== deleteConfirm.resumeId)
+        );
+        setDeleteConfirm(null);
+      } else {
+        setError(response.data.message || "Failed to delete resume");
+        setDeleteConfirm(null);
+      }
+    } catch (err) {
+      console.error("Error deleting resume:", err);
+      const errorMessage =
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        err.message ||
+        "An error occurred while deleting the resume";
+      setError(errorMessage);
+      setDeleteConfirm(null);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteConfirm(null);
+  };
+
   const styles = {
     container: {
       display: "flex",
       minHeight: "100vh",
-      fontFamily: "'Inter', sans-serif",
+      fontFamily: "Inter, -apple-system, sans-serif",
       backgroundColor: isDark ? "var(--bg-primary)" : "var(--bg-secondary)",
       transition: "background-color 0.3s ease",
     },
@@ -175,20 +230,22 @@ const ResumeList = () => {
       backgroundColor: isDark ? "var(--bg-primary)" : "#f5f5f7",
       overflowY: "auto",
       transition: "background-color 0.3s ease",
-      marginLeft: "clamp(0px, 280px, 280px)",
-      width: "calc(100% - clamp(0px, 280px, 280px))",
+      marginLeft: "30%",
+      width: "70%",
     },
     title: {
-      fontSize: "clamp(1.5rem, 3.5vw, 1.875rem)",
+      fontSize: "clamp(1.25rem, 3vw, 1.625rem)",
       fontWeight: "700",
       marginBottom: "0.5rem",
       color: isDark ? "var(--text-primary)" : "var(--text-primary)",
       letterSpacing: "-0.5px",
+      fontFamily: "Inter, -apple-system, sans-serif",
     },
     subtitle: {
-      fontSize: "clamp(0.9375rem, 2.25vw, 1rem)",
+      fontSize: "clamp(0.8125rem, 2vw, 0.9375rem)",
       color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
-      marginBottom: "clamp(1.5rem, 3vw, 2.5rem)",
+      marginBottom: "clamp(1.25rem, 2.5vw, 2rem)",
+      fontFamily: "Inter, -apple-system, sans-serif",
     },
     loadingContainer: {
       display: "flex",
@@ -234,23 +291,25 @@ const ResumeList = () => {
       marginBottom: "1.25rem",
     },
     resumeTitle: {
-      fontSize: "clamp(1rem, 2.25vw, 1.125rem)",
+      fontSize: "clamp(0.9375rem, 2vw, 1.0625rem)",
       fontWeight: "600",
       color: isDark ? "var(--text-primary)" : "var(--text-primary)",
       margin: 0,
       flex: 1,
       lineHeight: "1.4",
+      fontFamily: "Inter, -apple-system, sans-serif",
     },
     scoreBadge: {
       padding: "clamp(0.5rem, 1.5vw, 0.625rem) clamp(1rem, 2vw, 1.25rem)",
       borderRadius: "24px",
       color: "white",
       fontWeight: "600",
-      fontSize: "clamp(0.75rem, 1.375vw, 0.8125rem)",
+      fontSize: "clamp(0.6875rem, 1.25vw, 0.75rem)",
       display: "flex",
       alignItems: "center",
       gap: "0.375rem",
       boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+      fontFamily: "Inter, -apple-system, sans-serif",
     },
     resumeMeta: {
       display: "flex",
@@ -263,16 +322,18 @@ const ResumeList = () => {
       alignItems: "center",
       gap: "0.625rem",
       color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
-      fontSize: "0.8125rem",
+      fontSize: "0.75rem",
+      fontFamily: "Inter, -apple-system, sans-serif",
     },
     resumePreview: {
       color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
-      fontSize: "0.8125rem",
+      fontSize: "0.75rem",
       lineHeight: "1.6",
       maxHeight: "120px",
       overflow: "hidden",
       textOverflow: "ellipsis",
       marginBottom: "1.25rem",
+      fontFamily: "Inter, -apple-system, sans-serif",
     },
     resumeActions: {
       display: "flex",
@@ -280,23 +341,126 @@ const ResumeList = () => {
       justifyContent: "flex-end",
     },
     actionButton: {
-      padding: "clamp(0.625rem, 1.5vw, 0.75rem) clamp(1.25rem, 2vw, 1.5rem)",
+      padding: "clamp(0.5625rem, 1.375vw, 0.6875rem) clamp(1.125rem, 1.875vw, 1.375rem)",
       backgroundColor: isDark ? "#ffffff" : "#000000",
       color: isDark ? "#1d1d1f" : "#ffffff",
       border: "none",
       borderRadius: "8px",
       cursor: "pointer",
-      fontSize: "clamp(0.75rem, 1.375vw, 0.8125rem)",
+      fontSize: "clamp(0.6875rem, 1.25vw, 0.75rem)",
       fontWeight: "600",
       display: "flex",
       alignItems: "center",
       gap: "0.5rem",
       transition: "all 0.2s ease",
       boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+      fontFamily: "Inter, -apple-system, sans-serif",
     },
     actionButtonHover: {
       transform: "translateY(-2px)",
       boxShadow: "0 4px 8px rgba(0,0,0,0.3)",
+    },
+    deleteButton: {
+      padding: "clamp(0.5625rem, 1.375vw, 0.6875rem) clamp(1.125rem, 1.875vw, 1.375rem)",
+      backgroundColor: isDark ? "rgba(244, 67, 54, 0.1)" : "#ffebee",
+      color: isDark ? "#ff6b6b" : "#c62828",
+      border: `1px solid ${isDark ? "rgba(244, 67, 54, 0.3)" : "#ffcdd2"}`,
+      borderRadius: "8px",
+      cursor: "pointer",
+      fontSize: "clamp(0.6875rem, 1.25vw, 0.75rem)",
+      fontWeight: "600",
+      display: "flex",
+      alignItems: "center",
+      gap: "0.5rem",
+      transition: "all 0.2s ease",
+      fontFamily: "Inter, -apple-system, sans-serif",
+    },
+    deleteButtonHover: {
+      backgroundColor: isDark ? "rgba(244, 67, 54, 0.2)" : "#ffcdd2",
+      transform: "translateY(-2px)",
+      boxShadow: "0 4px 8px rgba(244, 67, 54, 0.3)",
+    },
+    modalOverlay: {
+      position: "fixed",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+      backdropFilter: "blur(8px)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 10000,
+      animation: "fadeIn 0.2s ease",
+    },
+    modalContent: {
+      backgroundColor: isDark ? "var(--bg-secondary)" : "#ffffff",
+      borderRadius: "20px",
+      padding: "clamp(1.5rem, 3vw, 2.5rem)",
+      maxWidth: "450px",
+      width: "90%",
+      boxShadow: isDark
+        ? "0 20px 60px rgba(0,0,0,0.5)"
+        : "0 20px 60px rgba(0,0,0,0.2)",
+      border: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "#e5e5e7"}`,
+      animation: "slideUp 0.3s ease",
+    },
+    modalHeader: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: "1.5rem",
+    },
+    modalTitle: {
+      fontSize: "clamp(1.125rem, 2.5vw, 1.375rem)",
+      fontWeight: "700",
+      color: isDark ? "var(--text-primary)" : "var(--text-primary)",
+      margin: 0,
+      fontFamily: "Inter, -apple-system, sans-serif",
+    },
+    modalCloseButton: {
+      background: "none",
+      border: "none",
+      color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
+      cursor: "pointer",
+      padding: "0.5rem",
+      borderRadius: "8px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      transition: "all 0.2s ease",
+    },
+    modalMessage: {
+      fontSize: "clamp(0.875rem, 1.75vw, 0.9375rem)",
+      color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
+      marginBottom: "2rem",
+      lineHeight: "1.6",
+      fontFamily: "Inter, -apple-system, sans-serif",
+    },
+    modalButtons: {
+      display: "flex",
+      gap: "0.75rem",
+      justifyContent: "flex-end",
+    },
+    modalButton: {
+      padding: "clamp(0.75rem, 1.5vw, 0.875rem) clamp(1.5rem, 3vw, 2rem)",
+      borderRadius: "12px",
+      border: "none",
+      cursor: "pointer",
+      fontSize: "clamp(0.875rem, 1.75vw, 0.9375rem)",
+      fontWeight: "600",
+      transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+      letterSpacing: "-0.01em",
+      fontFamily: "Inter, -apple-system, sans-serif",
+    },
+    modalButtonCancel: {
+      backgroundColor: isDark ? "rgba(255,255,255,0.1)" : "#f5f5f7",
+      color: isDark ? "rgba(255,255,255,0.9)" : "#1d1d1f",
+    },
+    modalButtonDelete: {
+      backgroundColor: isDark ? "rgba(244, 67, 54, 0.2)" : "#ffebee",
+      color: isDark ? "#ff6b6b" : "#c62828",
     },
   };
 
@@ -311,7 +475,7 @@ const ResumeList = () => {
 
         {loading ? (
           <div style={styles.loadingContainer}>
-            <p style={{ color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)", fontSize: "1rem" }}>
+            <p style={{ color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)", fontSize: "0.875rem", fontFamily: "Inter, -apple-system, sans-serif" }}>
               Loading resumes...
             </p>
           </div>
@@ -322,10 +486,10 @@ const ResumeList = () => {
         ) : resumes.length === 0 ? (
           <div style={styles.emptyState}>
             <FileText size={80} style={{ marginBottom: "1.5rem", color: isDark ? "var(--text-tertiary)" : "#ccc", opacity: 0.5 }} />
-            <h2 style={{ color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)", marginBottom: "0.75rem", fontSize: "1.375rem" }}>
+            <h2 style={{ color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)", marginBottom: "0.75rem", fontSize: "clamp(1.125rem, 2.5vw, 1.25rem)", fontFamily: "Inter, -apple-system, sans-serif" }}>
               No resumes yet
             </h2>
-            <p style={{ color: isDark ? "var(--text-tertiary)" : "#999", marginBottom: "2rem", fontSize: "0.9375rem" }}>
+            <p style={{ color: isDark ? "var(--text-tertiary)" : "#999", marginBottom: "2rem", fontSize: "clamp(0.8125rem, 1.5vw, 0.875rem)", fontFamily: "Inter, -apple-system, sans-serif" }}>
               Start by uploading and tailoring your first resume!
             </p>
             <button
@@ -391,28 +555,31 @@ const ResumeList = () => {
                         opacity: 0.5,
                       }} />
                       <div style={{
-                        fontSize: "clamp(0.8125rem, 1.75vw, 0.875rem)",
+                        fontSize: "clamp(0.75rem, 1.5vw, 0.8125rem)",
                         color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
                         marginBottom: "0.75rem",
                         fontWeight: "500",
                         letterSpacing: "0.02em",
                         textTransform: "uppercase",
+                        fontFamily: "Inter, -apple-system, sans-serif",
                       }}>
                         Previous Resume
                       </div>
                       <div style={{
-                        fontSize: "clamp(1.5rem, 3.5vw, 2rem)",
+                        fontSize: "clamp(1.25rem, 3vw, 1.75rem)",
                         fontWeight: "700",
                         color: getScoreColor(previousScore),
                         marginBottom: "0.5rem",
                         lineHeight: "1.2",
+                        fontFamily: "Inter, -apple-system, sans-serif",
                       }}>
                         {previousScore}/100
                       </div>
                       <div style={{
-                        fontSize: "clamp(0.875rem, 1.75vw, 0.9375rem)",
+                        fontSize: "clamp(0.8125rem, 1.5vw, 0.875rem)",
                         color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
                         lineHeight: "1.5",
+                        fontFamily: "Inter, -apple-system, sans-serif",
                       }}>
                         Your previous resume scored <strong style={{ color: getScoreColor(previousScore) }}>"{previousScore}"</strong>.
                       </div>
@@ -442,28 +609,31 @@ const ResumeList = () => {
                         opacity: 0.5,
                       }} />
                       <div style={{
-                        fontSize: "clamp(0.8125rem, 1.75vw, 0.875rem)",
+                        fontSize: "clamp(0.75rem, 1.5vw, 0.8125rem)",
                         color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
                         marginBottom: "0.75rem",
                         fontWeight: "500",
                         letterSpacing: "0.02em",
                         textTransform: "uppercase",
+                        fontFamily: "Inter, -apple-system, sans-serif",
                       }}>
                         Best Performance
                       </div>
                       <div style={{
-                        fontSize: "clamp(1.5rem, 3.5vw, 2rem)",
+                        fontSize: "clamp(1.25rem, 3vw, 1.75rem)",
                         fontWeight: "700",
                         color: getScoreColor(highestScore.toString()),
                         marginBottom: "0.5rem",
                         lineHeight: "1.2",
+                        fontFamily: "Inter, -apple-system, sans-serif",
                       }}>
                         {highestScore}/100
                       </div>
                       <div style={{
-                        fontSize: "clamp(0.875rem, 1.75vw, 0.9375rem)",
+                        fontSize: "clamp(0.8125rem, 1.5vw, 0.875rem)",
                         color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
                         lineHeight: "1.5",
+                        fontFamily: "Inter, -apple-system, sans-serif",
                       }}>
                         Your highest score over the last 5 uploads is <strong style={{ color: getScoreColor(highestScore.toString()) }}>"{highestScore}"</strong>.
                       </div>
@@ -480,11 +650,12 @@ const ResumeList = () => {
               borderBottom: `2px solid ${isDark ? "var(--border-color)" : "#e0e0e0"}`,
             }}>
               <h2 style={{
-                fontSize: "clamp(1.25rem, 2.75vw, 1.5rem)",
+                fontSize: "clamp(1.125rem, 2.5vw, 1.375rem)",
                 fontWeight: "700",
                 color: isDark ? "var(--text-primary)" : "var(--text-primary)",
                 margin: 0,
                 letterSpacing: "-0.01em",
+                fontFamily: "Inter, -apple-system, sans-serif",
               }}>
                 Track your last five resume uploads.
               </h2>
@@ -553,6 +724,21 @@ const ResumeList = () => {
 
                   <div style={styles.resumeActions}>
                     <button
+                      style={styles.deleteButton}
+                      onClick={(e) => handleDeleteClick(resume, e)}
+                      onMouseEnter={(e) => {
+                        Object.assign(e.currentTarget.style, styles.deleteButtonHover);
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = "translateY(0)";
+                        e.currentTarget.style.boxShadow = "none";
+                        e.currentTarget.style.backgroundColor = isDark ? "rgba(244, 67, 54, 0.1)" : "#ffebee";
+                      }}
+                    >
+                      <Trash2 size={18} />
+                      Delete
+                    </button>
+                    <button
                       style={styles.actionButton}
                       onClick={(e) => handleDownload(resume, e)}
                       onMouseEnter={(e) => {
@@ -573,6 +759,110 @@ const ResumeList = () => {
           </>
         )}
       </main>
+
+      {/* Delete Confirmation Modal */}
+      {deleteConfirm && (
+        <>
+          <style>
+            {`
+              @keyframes fadeIn {
+                from {
+                  opacity: 0;
+                }
+                to {
+                  opacity: 1;
+                }
+              }
+              @keyframes slideUp {
+                from {
+                  opacity: 0;
+                  transform: translateY(20px);
+                }
+                to {
+                  opacity: 1;
+                  transform: translateY(0);
+                }
+              }
+            `}
+          </style>
+          <div
+            style={styles.modalOverlay}
+            onClick={handleDeleteCancel}
+          >
+            <div
+              style={styles.modalContent}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div style={styles.modalHeader}>
+                <h3 style={styles.modalTitle}>Delete Resume</h3>
+                <button
+                  style={styles.modalCloseButton}
+                  onClick={handleDeleteCancel}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = isDark
+                      ? "rgba(255,255,255,0.1)"
+                      : "#f5f5f7";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "transparent";
+                  }}
+                >
+                  <X size={20} />
+                </button>
+              </div>
+              <p style={styles.modalMessage}>
+                Are you sure you want to delete <strong>"{deleteConfirm.resumeTitle}"</strong>? This action cannot be undone.
+              </p>
+              <div style={styles.modalButtons}>
+                <button
+                  style={{
+                    ...styles.modalButton,
+                    ...styles.modalButtonCancel,
+                  }}
+                  onClick={handleDeleteCancel}
+                  disabled={deleting}
+                  onMouseEnter={(e) => {
+                    if (!deleting) {
+                      e.currentTarget.style.backgroundColor = isDark
+                        ? "rgba(255,255,255,0.15)"
+                        : "#e5e5e7";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = isDark
+                      ? "rgba(255,255,255,0.1)"
+                      : "#f5f5f7";
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  style={{
+                    ...styles.modalButton,
+                    ...styles.modalButtonDelete,
+                  }}
+                  onClick={handleDeleteConfirm}
+                  disabled={deleting}
+                  onMouseEnter={(e) => {
+                    if (!deleting) {
+                      e.currentTarget.style.backgroundColor = isDark
+                        ? "rgba(244, 67, 54, 0.3)"
+                        : "#ffcdd2";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = isDark
+                      ? "rgba(244, 67, 54, 0.2)"
+                      : "#ffebee";
+                  }}
+                >
+                  {deleting ? "Deleting..." : "Delete"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

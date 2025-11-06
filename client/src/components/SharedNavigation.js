@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { LayoutGrid, FileDown, User2, Moon, Sun, LogOut, Menu, X } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
@@ -48,34 +48,50 @@ const SharedNavigation = ({ activePage = "home" }) => {
 
   const currentPage = getActivePage();
 
-  const styles = {
+  const styles = useMemo(() => ({
     sidebar: {
-      width: "280px",
+      width: "30%",
+      minWidth: "280px",
+      maxWidth: "400px",
       height: "100vh",
       backgroundColor: isDark ? "var(--bg-secondary)" : "#ffffff",
       color: isDark ? "var(--text-primary)" : "#1d1d1f",
-      padding: "2.5rem 2rem",
+      padding: "clamp(2rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2.5rem)",
       display: "flex",
       flexDirection: "column",
       justifyContent: "space-between",
-      borderRight: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "#e5e5e7"}`,
-      boxShadow: isDark ? "2px 0 12px rgba(0,0,0,0.4)" : "1px 0 4px rgba(0,0,0,0.05)",
-      transition: "all 0.3s ease",
-      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif",
+      borderRight: `2px solid ${isDark ? "rgba(255,255,255,0.15)" : "#e5e5e7"}`,
+      boxShadow: isDark ? "4px 0 24px rgba(0,0,0,0.5)" : "2px 0 12px rgba(0,0,0,0.08)",
+      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+      fontFamily: "Inter, -apple-system, sans-serif",
       position: "fixed",
       left: 0,
       top: 0,
       overflowY: "auto",
       overflowX: "hidden",
       zIndex: 1000,
+      background: isDark 
+        ? "linear-gradient(180deg, var(--bg-secondary) 0%, rgba(0,0,0,0.3) 100%)"
+        : "linear-gradient(180deg, #ffffff 0%, #fafafa 100%)",
     },
     logo: {
-      fontSize: "1.5rem",
-      fontWeight: "700",
-      marginBottom: "3rem",
+      fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)",
+      fontWeight: "800",
+      marginBottom: "clamp(1.75rem, 3.5vw, 2.5rem)",
       color: isDark ? "#ffffff" : "#1d1d1f",
       letterSpacing: "-0.02em",
       lineHeight: "1.1",
+      background: isDark 
+        ? "linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.8) 100%)"
+        : "linear-gradient(135deg, #1d1d1f 0%, #4a4a4a 100%)",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+      backgroundClip: "text",
+      paddingBottom: "1rem",
+      borderBottom: `2px solid ${isDark ? "rgba(255,255,255,0.1)" : "#e5e5e7"}`,
+      fontFamily: "Inter, -apple-system, sans-serif",
+      transition: "background 0.3s ease, border-color 0.3s ease, -webkit-background-clip 0.3s ease, background-clip 0.3s ease",
+      willChange: "background",
     },
     nav: {
       display: "flex",
@@ -87,65 +103,73 @@ const SharedNavigation = ({ activePage = "home" }) => {
     navItem: {
       display: "flex",
       alignItems: "center",
-      gap: "0.75rem",
+      gap: "clamp(0.75rem, 1.5vw, 1rem)",
       color: isDark ? "rgba(255,255,255,0.7)" : "#86868b",
       textDecoration: "none",
-      fontSize: "0.875rem",
-      padding: "0.875rem 1rem",
-      borderRadius: "12px",
+      fontSize: "clamp(0.8125rem, 1.375vw, 0.9375rem)",
+      padding: "clamp(0.875rem, 1.75vw, 1.125rem) clamp(0.9375rem, 1.75vw, 1.375rem)",
+      borderRadius: "16px",
       cursor: "pointer",
-      transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
-      fontWeight: "500",
+      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+      fontWeight: "600",
       letterSpacing: "-0.01em",
+      position: "relative",
+      overflow: "hidden",
+      fontFamily: "Inter, -apple-system, sans-serif",
     },
     activeNavItem: {
       color: isDark ? "#ffffff" : "#1d1d1f",
-      backgroundColor: isDark ? "rgba(255,255,255,0.1)" : "#f5f5f7",
-      fontWeight: "600",
+      backgroundColor: isDark ? "rgba(255,255,255,0.15)" : "#f5f5f7",
+      fontWeight: "700",
+      boxShadow: isDark ? "0 4px 12px rgba(255,255,255,0.1)" : "0 4px 12px rgba(0,0,0,0.08)",
+      transform: "translateX(4px)",
     },
     navItemHover: {
-      backgroundColor: isDark ? "rgba(255,255,255,0.08)" : "#f5f5f7",
+      backgroundColor: isDark ? "rgba(255,255,255,0.12)" : "#f5f5f7",
       color: isDark ? "#ffffff" : "#1d1d1f",
+      transform: "translateX(4px)",
     },
     bottomSection: {
       display: "flex",
       flexDirection: "column",
-      gap: "0.75rem",
+      gap: "clamp(0.75rem, 1.5vw, 1rem)",
       marginTop: "auto",
-      paddingTop: "2rem",
-      borderTop: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "#e5e5e7"}`,
+      paddingTop: "clamp(1.5rem, 3vw, 2rem)",
+      borderTop: `2px solid ${isDark ? "rgba(255,255,255,0.15)" : "#e5e5e7"}`,
       flexShrink: 0,
     },
     themeToggle: {
       display: "flex",
       alignItems: "center",
-      gap: "0.75rem",
-      padding: "0.875rem 1rem",
-      borderRadius: "12px",
+      gap: "clamp(0.75rem, 1.5vw, 1rem)",
+      padding: "clamp(0.875rem, 1.75vw, 1.125rem) clamp(0.9375rem, 1.75vw, 1.375rem)",
+      borderRadius: "16px",
       cursor: "pointer",
-      backgroundColor: isDark ? "rgba(255,255,255,0.1)" : "#f5f5f7",
+      backgroundColor: isDark ? "rgba(255,255,255,0.12)" : "#f5f5f7",
       color: isDark ? "#ffffff" : "#1d1d1f",
-      border: "none",
-      fontSize: "0.875rem",
-      fontWeight: "500",
-      transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+      border: `2px solid ${isDark ? "rgba(255,255,255,0.1)" : "#e5e5e7"}`,
+      fontSize: "clamp(0.8125rem, 1.375vw, 0.9375rem)",
+      fontWeight: "600",
+      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
       marginBottom: "0.75rem",
       letterSpacing: "-0.01em",
+      fontFamily: "Inter, -apple-system, sans-serif",
     },
     logoutButton: {
       display: "flex",
       alignItems: "center",
-      gap: "0.75rem",
-      padding: "0.875rem 1rem",
-      borderRadius: "12px",
+      gap: "clamp(0.75rem, 1.5vw, 1rem)",
+      padding: "clamp(0.875rem, 1.75vw, 1.125rem) clamp(0.9375rem, 1.75vw, 1.375rem)",
+      borderRadius: "16px",
       cursor: "pointer",
       backgroundColor: "transparent",
       color: isDark ? "rgba(255,255,255,0.7)" : "#86868b",
-      border: "none",
-      fontSize: "0.875rem",
-      fontWeight: "500",
-      transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+      border: `2px solid ${isDark ? "rgba(255,255,255,0.1)" : "#e5e5e7"}`,
+      fontSize: "clamp(0.8125rem, 1.375vw, 0.9375rem)",
+      fontWeight: "600",
+      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
       letterSpacing: "-0.01em",
+      fontFamily: "Inter, -apple-system, sans-serif",
     },
     modalOverlay: {
       position: "fixed",
@@ -209,7 +233,7 @@ const SharedNavigation = ({ activePage = "home" }) => {
       backgroundColor: isDark ? "#ffffff" : "#1d1d1f",
       color: isDark ? "#1d1d1f" : "#ffffff",
     },
-  };
+  }), [isDark]);
 
   return (
     <>
@@ -271,7 +295,17 @@ const SharedNavigation = ({ activePage = "home" }) => {
       >
         <div style={{ display: "flex", flexDirection: "column", height: "100%", minHeight: 0 }}>
         <div>
-          <div style={styles.logo}>PepperUni</div>
+          <div 
+            key={`logo-${isDark}`} 
+            style={{
+              ...styles.logo,
+              background: isDark 
+                ? "linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.8) 100%)"
+                : "linear-gradient(135deg, #1d1d1f 0%, #4a4a4a 100%)",
+            }}
+          >
+            PepperUni
+          </div>
           <nav style={styles.nav}>
           <Link
             to="/resumeupload"

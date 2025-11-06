@@ -184,3 +184,65 @@ exports.getUserResumes = async (req, res) => {
     });
   }
 };
+
+/**
+ * Delete a resume by ID
+ */
+exports.deleteResume = async (req, res) => {
+  try {
+    const { resume_id } = req.params;
+    const user_id = req.user?.id; // Get user_id from auth middleware
+    
+    console.log("Deleting resume:", resume_id, "for user:", user_id);
+    
+    if (!resume_id) {
+      return res.status(400).json({ 
+        status: "error",
+        message: "Resume ID is required" 
+      });
+    }
+
+    if (!user_id) {
+      return res.status(401).json({ 
+        status: "error",
+        message: "Authentication required" 
+      });
+    }
+
+    // Find the resume to ensure it exists and belongs to the user
+    const resume = await Resume.findById(resume_id);
+    
+    if (!resume) {
+      return res.status(404).json({ 
+        status: "error",
+        message: "Resume not found" 
+      });
+    }
+
+    // Verify the resume belongs to the user
+    if (resume.user_id !== user_id.toString()) {
+      return res.status(403).json({ 
+        status: "error",
+        message: "You don't have permission to delete this resume" 
+      });
+    }
+
+    // Delete the resume
+    await Resume.findByIdAndDelete(resume_id);
+    
+    console.log(`Resume ${resume_id} deleted successfully`);
+
+    return res.status(200).json({
+      status: "success",
+      message: "Resume deleted successfully",
+    });
+  } catch (err) {
+    console.error("Error deleting resume:", err);
+    console.error("Error stack:", err.stack);
+    res.status(500).json({ 
+      status: "error",
+      message: "An error occurred while deleting the resume", 
+      error: err.message 
+    });
+  }
+};

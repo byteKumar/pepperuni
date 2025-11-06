@@ -1,7 +1,9 @@
 /* Mobile Styles (≤768px) */
 @media (max-width: 768px) {
   .sidebar {
-    width: 260px !important;
+    width: 280px !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
   }
@@ -30,7 +32,9 @@
 /* Tablet Styles (769px - 1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
   .sidebar {
-    width: 260px !important;
+    width: 30% !important;
+    min-width: 280px !important;
+    max-width: 350px !important;
   }
 
   .sidebar .logo {
@@ -41,7 +45,9 @@
 /* Desktop Styles (≥1025px) */
 @media (min-width: 1025px) {
   .sidebar {
-    width: 280px !important;
+    width: 30% !important;
+    min-width: 280px !important;
+    max-width: 400px !important;
   }
 }
 
