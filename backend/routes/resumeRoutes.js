@@ -44,7 +44,7 @@ const upload = multer({
 router.post("/main_job", upload.single("file"), mainJob);
 
 // Define the route to get user resumes
-// Note: This route is at /api/resumes/user/:user_id to avoid conflict with /api/resumes/edit-resume
+// This route is at /api/resumes/user/:user_id
 router.get("/resumes/user/:user_id", getUserResumes);
 
 module.exports = router;

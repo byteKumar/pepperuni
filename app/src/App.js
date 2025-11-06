@@ -9,6 +9,7 @@ import Response from "./components/Response";
 import JobDetails from "./components/JobDetails";
 import ResumeUpload from "./components/ResumeUpload";
 import ResumeList from "./components/ResumeList";
+import Profile from "./components/Profile";
 import "./App.css";
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/response" element={<Response />} />
         <Route path="/JD" element={<JobDetails />} />
         <Route path="/resume" element={<ResumeList />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   );

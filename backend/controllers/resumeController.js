@@ -110,16 +110,22 @@ exports.getUserResumes = async (req, res) => {
   try {
     const { user_id } = req.params;
     
+    console.log("Getting resumes for user_id:", user_id);
+    
     if (!user_id) {
+      console.log("User ID missing in request");
       return res.status(400).json({ 
         status: "error",
         message: "User ID is required" 
       });
     }
 
+    console.log("Querying database for user_id:", user_id);
     const resumes = await Resume.find({ user_id })
       .sort({ created_date: -1 }) // Sort by newest first
       .exec();
+
+    console.log(`Found ${resumes.length} resumes for user ${user_id}`);
 
     return res.status(200).json({
       status: "success",
@@ -131,6 +137,7 @@ exports.getUserResumes = async (req, res) => {
     });
   } catch (err) {
     console.error("Error fetching resumes:", err);
+    console.error("Error stack:", err.stack);
     res.status(500).json({ 
       status: "error",
       message: "An error occurred while fetching resumes", 

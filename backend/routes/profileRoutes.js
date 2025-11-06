@@ -1,8 +1,15 @@
 const express = require("express");
-const { updateProfile } = require("../controllers/profileController");
+const { getProfile, updateProfile, changePassword } = require("../controllers/profileController");
 
 const router = express.Router();
 
-router.post("/update", updateProfile);
+// Get user profile
+router.get("/:user_id", getProfile);
+
+// Update user profile
+router.put("/:user_id", updateProfile);
+
+// Change password
+router.post("/:user_id/change-password", changePassword);
 
 module.exports = router;

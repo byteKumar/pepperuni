@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { LayoutGrid, FileDown, User2, Settings, Download, Calendar, TrendingUp } from "lucide-react";
+import { LayoutGrid, FileDown, User2, Download, Calendar, TrendingUp } from "lucide-react";
 import axios from "axios";
 
 const ResumeList = () => {
@@ -11,16 +11,35 @@ const ResumeList = () => {
 
   useEffect(() => {
     // Check if user is logged in
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const userStr = localStorage.getItem("user");
     const token = localStorage.getItem("token");
 
-    if (!token || !user.id) {
+    console.log("User from localStorage:", userStr);
+    console.log("Token exists:", !!token);
+
+    if (!token || !userStr) {
+      console.log("No token or user, redirecting to login");
       navigate("/login");
       return;
     }
 
-    // Fetch user resumes
-    fetchResumes(user.id, token);
+    try {
+      const user = JSON.parse(userStr);
+      console.log("Parsed user:", user);
+      
+      if (!user.id) {
+        console.log("No user.id found, redirecting to login");
+        navigate("/login");
+        return;
+      }
+
+      // Fetch user resumes
+      console.log("Calling fetchResumes with user.id:", user.id);
+      fetchResumes(user.id, token);
+    } catch (error) {
+      console.error("Error parsing user data:", error);
+      navigate("/login");
+    }
   }, [navigate]);
 
   const fetchResumes = async (userId, token) => {
@@ -28,6 +47,7 @@ const ResumeList = () => {
     setError("");
 
     try {
+      console.log("Fetching resumes for user:", userId);
       const response = await axios.get(
         `http://localhost:5001/api/resumes/user/${userId}`,
         {
@@ -37,6 +57,7 @@ const ResumeList = () => {
         }
       );
 
+      console.log("Resume fetch response:", response.data);
       if (response.data.status === "success") {
         setResumes(response.data.data.resumes || []);
       } else {
@@ -44,7 +65,17 @@ const ResumeList = () => {
       }
     } catch (err) {
       console.error("Error fetching resumes:", err);
-      setError(err.response?.data?.message || "An error occurred while fetching resumes");
+      console.error("Error details:", {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status,
+        statusText: err.response?.statusText,
+      });
+      const errorMessage = err.response?.data?.message || 
+                          err.response?.data?.error || 
+                          err.message || 
+                          "An error occurred while fetching resumes";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -266,12 +297,9 @@ const ResumeList = () => {
           <div style={{ ...styles.navItem, ...styles.activeNavItem }}>
             <FileDown /> Resume
           </div>
-          <div style={styles.navItem}>
+          <Link to="/profile" style={styles.navItem}>
             <User2 /> Profile
-          </div>
-          <div style={styles.navItem}>
-            <Settings /> Settings
-          </div>
+          </Link>
           <div
             style={styles.navItem}
             onClick={() => {

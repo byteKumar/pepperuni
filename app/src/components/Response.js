@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { LayoutGrid, FileDown, User2, Settings, Download } from "lucide-react";
+import { LayoutGrid, FileDown, User2, Download } from "lucide-react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 
 const Response = () => {
@@ -133,15 +133,12 @@ const Response = () => {
           <Link to="/resumeupload" style={styles.navItem}>
             <LayoutGrid /> Home
           </Link>
-          <Link to="/resume" style={{ ...styles.navItem, ...styles.activeNavItem }}>
+          <Link to="/resume" style={styles.navItem}>
             <FileDown /> Resume
           </Link>
-          <div style={styles.navItem}>
+          <Link to="/profile" style={styles.navItem}>
             <User2 /> Profile
-          </div>
-          <div style={styles.navItem}>
-            <Settings /> Settings
-          </div>
+          </Link>
           <div
             style={styles.navItem}
             onClick={() => {

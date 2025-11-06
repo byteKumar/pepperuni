@@ -21,8 +21,8 @@ mongoose
 
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
-app.use("/api/resumes", editResumeRoutes);
 app.use("/api", resumeRoutes);
+app.use("/api/resumes", editResumeRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

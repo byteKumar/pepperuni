@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { LayoutGrid, FileDown, User2, Settings, CloudIcon } from "lucide-react";
+import { LayoutGrid, FileDown, User2, CloudIcon } from "lucide-react";
 import axios from "axios";
 
 const ResumeUpload = () => {
@@ -250,18 +250,22 @@ const ResumeUpload = () => {
             </span>
             Resume
           </Link>
-          <a style={styles.navItem}>
+          <Link to="/profile" style={styles.navItem}>
             <span style={{ fontSize: "1.25rem" }}>
               <User2 />
             </span>
             Profile
-          </a>
-          <a style={styles.navItem}>
-            <span style={{ fontSize: "1.25rem" }}>
-              <Settings />
-            </span>
-            Setting
-          </a>
+          </Link>
+          <div
+            style={styles.navItem}
+            onClick={() => {
+              localStorage.removeItem("token");
+              localStorage.removeItem("user");
+              navigate("/login");
+            }}
+          >
+            Logout
+          </div>
         </nav>
       </aside>
       <main style={styles.main}>
