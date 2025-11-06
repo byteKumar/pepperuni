@@ -1,8 +1,10 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "../contexts/ThemeContext";
 import "./JobDetails.css";
 
 function JobDetails() {
+  const { isDark } = useTheme();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [fileName, setFileName] = useState('');
   const fileInputRef = useRef(null);

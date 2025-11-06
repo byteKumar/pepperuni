@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Mail, Phone, Linkedin, Globe, Lock, Save, Edit2, Settings } from "lucide-react";
+import { Mail, Phone, Linkedin, Globe, Lock, Save, Edit2, Settings, Eye, EyeOff } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
 import SharedNavigation from "./SharedNavigation";
 import axios from "axios";
@@ -28,6 +28,9 @@ const Profile = () => {
   const [changingPassword, setChangingPassword] = useState(false);
   const [passwordError, setPasswordError] = useState("");
   const [passwordSuccess, setPasswordSuccess] = useState("");
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -285,8 +288,8 @@ const Profile = () => {
     },
     button: {
       padding: "clamp(0.875rem, 2vw, 1rem) clamp(1.75rem, 3vw, 2rem)",
-      backgroundColor: isDark ? "var(--accent-color)" : "#000000",
-      color: "white",
+      backgroundColor: isDark ? "#ffffff" : "#1d1d1f",
+      color: isDark ? "#1d1d1f" : "#ffffff",
       border: "none",
       borderRadius: "8px",
       cursor: "pointer",
@@ -304,6 +307,7 @@ const Profile = () => {
     },
     buttonSecondary: {
       backgroundColor: isDark ? "#333" : "#666",
+      color: isDark ? "#ffffff" : "#ffffff",
     },
     errorMessage: {
       padding: "1rem",
@@ -522,17 +526,48 @@ const Profile = () => {
                 <Lock size={16} />
                 Current Password
               </label>
-              <input
-                type="password"
-                value={passwordData.currentPassword}
-                onChange={(e) => {
-                  setPasswordData({ ...passwordData, currentPassword: e.target.value });
-                  setPasswordError("");
-                  setPasswordSuccess("");
-                }}
-                style={styles.input}
-                required
-              />
+              <div style={{ position: "relative" }}>
+                <input
+                  type={showCurrentPassword ? "text" : "password"}
+                  value={passwordData.currentPassword}
+                  onChange={(e) => {
+                    setPasswordData({ ...passwordData, currentPassword: e.target.value });
+                    setPasswordError("");
+                    setPasswordSuccess("");
+                  }}
+                  style={{ ...styles.input, paddingRight: "2.75rem" }}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                  style={{
+                    position: "absolute",
+                    right: "0.75rem",
+                    top: "35%",
+                    transform: "translateY(-50%)",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    padding: "0",
+                    width: "24px",
+                    height: "24px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: isDark ? "rgba(255,255,255,0.7)" : "#86868b",
+                    transition: "color 0.2s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = isDark ? "#ffffff" : "#1d1d1f";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = isDark ? "rgba(255,255,255,0.7)" : "#86868b";
+                  }}
+                >
+                  {showCurrentPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </div>
 
             <div style={styles.formGroup}>
@@ -540,18 +575,49 @@ const Profile = () => {
                 <Lock size={16} />
                 New Password
               </label>
-              <input
-                type="password"
-                value={passwordData.newPassword}
-                onChange={(e) => {
-                  setPasswordData({ ...passwordData, newPassword: e.target.value });
-                  setPasswordError("");
-                  setPasswordSuccess("");
-                }}
-                style={styles.input}
-                required
-                minLength={6}
-              />
+              <div style={{ position: "relative" }}>
+                <input
+                  type={showNewPassword ? "text" : "password"}
+                  value={passwordData.newPassword}
+                  onChange={(e) => {
+                    setPasswordData({ ...passwordData, newPassword: e.target.value });
+                    setPasswordError("");
+                    setPasswordSuccess("");
+                  }}
+                  style={{ ...styles.input, paddingRight: "2.75rem" }}
+                  required
+                  minLength={6}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                  style={{
+                    position: "absolute",
+                    right: "0.75rem",
+                    top: "35%",
+                    transform: "translateY(-50%)",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    padding: "0",
+                    width: "24px",
+                    height: "24px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: isDark ? "rgba(255,255,255,0.7)" : "#86868b",
+                    transition: "color 0.2s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = isDark ? "#ffffff" : "#1d1d1f";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = isDark ? "rgba(255,255,255,0.7)" : "#86868b";
+                  }}
+                >
+                  {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </div>
 
             <div style={styles.formGroup}>
@@ -559,18 +625,49 @@ const Profile = () => {
                 <Lock size={16} />
                 Confirm New Password
               </label>
-              <input
-                type="password"
-                value={passwordData.confirmPassword}
-                onChange={(e) => {
-                  setPasswordData({ ...passwordData, confirmPassword: e.target.value });
-                  setPasswordError("");
-                  setPasswordSuccess("");
-                }}
-                style={styles.input}
-                required
-                minLength={6}
-              />
+              <div style={{ position: "relative" }}>
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  value={passwordData.confirmPassword}
+                  onChange={(e) => {
+                    setPasswordData({ ...passwordData, confirmPassword: e.target.value });
+                    setPasswordError("");
+                    setPasswordSuccess("");
+                  }}
+                  style={{ ...styles.input, paddingRight: "2.75rem" }}
+                  required
+                  minLength={6}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  style={{
+                    position: "absolute",
+                    right: "0.75rem",
+                    top: "35%",
+                    transform: "translateY(-50%)",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    padding: "0",
+                    width: "24px",
+                    height: "24px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: isDark ? "rgba(255,255,255,0.7)" : "#86868b",
+                    transition: "color 0.2s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = isDark ? "#ffffff" : "#1d1d1f";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = isDark ? "rgba(255,255,255,0.7)" : "#86868b";
+                  }}
+                >
+                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </div>
 
             <button

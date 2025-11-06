@@ -148,12 +148,11 @@ PepperUni-main/
 │   ├── uploads/        # Temporary file storage (auto-created)
 │   ├── server.js       # Entry point
 │   └── .env           # Environment variables (create this)
-├── client/
-│   ├── src/
-│   │   ├── components/ # React components
-│   │   └── App.js     # Main app component
-│   └── package.json
-└── service/            # Python reference implementation
+└── client/
+    ├── src/
+    │   ├── components/ # React components
+    │   └── App.js     # Main app component
+    └── package.json
 ```
 
 ## Notes

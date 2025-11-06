@@ -119,6 +119,16 @@ body {
   cursor: pointer;
 }
 
+[data-theme="dark"] .browse-btn {
+  background-color: #ffffff;
+  color: #1d1d1f;
+}
+
+[data-theme="light"] .browse-btn {
+  background-color: #00bcd4;
+  color: white;
+}
+
 .browse-btn img {
   height: 20px;
   margin-right: 10px;
@@ -162,9 +172,30 @@ form textarea {
 
 .cancel-btn {
   background-color: #ccc;
+  color: #1d1d1f;
+}
+
+[data-theme="dark"] .cancel-btn {
+  background-color: #333;
+  color: #ffffff;
+}
+
+[data-theme="light"] .cancel-btn {
+  background-color: #ccc;
+  color: #1d1d1f;
 }
 
 .save-btn {
+  background-color: #00bcd4;
+  color: white;
+}
+
+[data-theme="dark"] .save-btn {
+  background-color: #ffffff;
+  color: #1d1d1f;
+}
+
+[data-theme="light"] .save-btn {
   background-color: #00bcd4;
   color: white;
 }
