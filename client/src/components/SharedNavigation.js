@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { LayoutGrid, FileDown, User2, Moon, Sun, LogOut, Menu, X } from "lucide-react";
+import { LayoutGrid, FileDown, User2, LogOut, Menu, X } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
 import "./SharedNavigation.css";
 
 const SharedNavigation = ({ activePage = "home" }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { theme, toggleTheme, isDark } = useTheme();
+  const { theme, isDark } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
@@ -137,23 +137,6 @@ const SharedNavigation = ({ activePage = "home" }) => {
       paddingTop: "clamp(1.5rem, 3vw, 2rem)",
       borderTop: `2px solid ${isDark ? "rgba(255,255,255,0.15)" : "#e5e5e7"}`,
       flexShrink: 0,
-    },
-    themeToggle: {
-      display: "flex",
-      alignItems: "center",
-      gap: "clamp(0.75rem, 1.5vw, 1rem)",
-      padding: "clamp(0.875rem, 1.75vw, 1.125rem) clamp(0.9375rem, 1.75vw, 1.375rem)",
-      borderRadius: "16px",
-      cursor: "pointer",
-      backgroundColor: isDark ? "rgba(255,255,255,0.12)" : "#f5f5f7",
-      color: isDark ? "#ffffff" : "#1d1d1f",
-      border: `2px solid ${isDark ? "rgba(255,255,255,0.1)" : "#e5e5e7"}`,
-      fontSize: "clamp(0.8125rem, 1.375vw, 0.9375rem)",
-      fontWeight: "600",
-      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-      marginBottom: "0.75rem",
-      letterSpacing: "-0.01em",
-      fontFamily: "Inter, -apple-system, sans-serif",
     },
     logoutButton: {
       display: "flex",
@@ -376,21 +359,6 @@ const SharedNavigation = ({ activePage = "home" }) => {
         </nav>
         </div>
         <div style={styles.bottomSection}>
-        <button
-          style={styles.themeToggle}
-          onClick={toggleTheme}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = isDark ? "rgba(255,255,255,0.15)" : "#e8e8e8";
-            e.currentTarget.style.transform = "scale(1.02)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = isDark ? "rgba(255,255,255,0.1)" : "#f5f5f7";
-            e.currentTarget.style.transform = "scale(1)";
-          }}
-        >
-          {isDark ? <Sun size={20} /> : <Moon size={20} />}
-          {isDark ? "Light Mode" : "Dark Mode"}
-        </button>
         <button
           style={styles.logoutButton}
           onClick={handleLogout}

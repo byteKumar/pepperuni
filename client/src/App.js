@@ -9,6 +9,7 @@ import JobDetails from "./components/JobDetails";
 import ResumeUpload from "./components/ResumeUpload";
 import ResumeList from "./components/ResumeList";
 import Profile from "./components/Profile";
+import FloatingThemeToggle from "./components/FloatingThemeToggle";
 import "./App.css";
 
 const App = () => {
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/resume" element={<ResumeList />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
+        <FloatingThemeToggle />
       </Router>
     </ThemeProvider>
   );
