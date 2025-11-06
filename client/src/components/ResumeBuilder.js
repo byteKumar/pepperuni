@@ -319,7 +319,7 @@ const ResumeBuilder = () => {
           <div className="right-section" style={styles.rightSection}>
             <div style={styles.imageContainer}>
               <img 
-                src={process.env.PUBLIC_URL ? `${process.env.PUBLIC_URL}/frontPage.png` : '/frontPage.png'} 
+                src={process.env.PUBLIC_URL ? `${process.env.PUBLIC_URL}/frontpage.png` : '/frontpage.png'} 
                 alt="Resume Analysis Dashboard" 
                 style={styles.image}
               />
