@@ -14,59 +14,110 @@ body {
   display: flex;
   min-height: 100vh;
   flex-direction: row;
-  background-color: var(--bg-secondary);
+  background-color: var(--bg-primary);
   transition: background-color 0.3s ease;
+  font-family: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', 'Roboto', sans-serif";
 }
 
-/* Sidebar styles */
-.sidebar {
-  width: 40%;
-  background-color: var(--bg-secondary);
+/* Left section styles */
+.left-section {
+  width: 50%;
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
   color: var(--text-primary);
-  padding: 3rem 2rem;
-  text-align: center;
+  padding: clamp(2rem, 5vw, 4rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-right: 1px solid var(--border-color);
+  align-items: flex-start;
+  position: relative;
+  overflow: hidden;
   transition: all 0.3s ease;
 }
 
-[data-theme="light"] .sidebar {
-  background-color: #000000;
+[data-theme="light"] .left-section {
+  background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
   color: #ffffff;
 }
 
-.sidebar h1 {
-  font-size: 2.5rem;
+[data-theme="dark"] .left-section {
+  background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+}
+
+.left-content {
+  max-width: 600px;
+  z-index: 1;
+  animation: fadeInLeft 0.8s ease-out;
+}
+
+.logo {
+  font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 700;
-  margin-bottom: 1.5rem;
-  letter-spacing: -0.5px;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
 }
 
-.sidebar p {
-  font-size: 1rem;
+.hero-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+
+.hero-description {
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  line-height: 1.7;
   color: var(--text-secondary);
-  line-height: 1.6;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+  max-width: 550px;
 }
 
-/* Main content styles */
-.main {
-  flex: 1;
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 1.5vw, 1rem);
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 1.5vw, 1rem);
+  font-size: clamp(0.9375rem, 2vw, 1rem);
+  color: var(--text-secondary);
+}
+
+.feature-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--text-primary);
+  flex-shrink: 0;
+}
+
+/* Right section styles */
+.right-section {
+  width: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 3rem 2rem;
+  padding: clamp(2rem, 5vw, 4rem);
   background-color: var(--bg-primary);
   transition: background-color 0.3s ease;
 }
 
-.form {
+.form-container {
   width: 100%;
   max-width: 450px;
+  animation: fadeInRight 0.8s ease-out;
+}
+
+.form {
+  width: 100%;
   background-color: var(--bg-secondary);
-  padding: 2.5rem;
-  border-radius: 12px;
+  padding: clamp(2rem, 4vw, 2.5rem);
+  border-radius: 16px;
   box-shadow: var(--card-shadow);
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
@@ -74,6 +125,11 @@ body {
 
 [data-theme="light"] .form {
   background-color: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] .form {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .title {
@@ -190,30 +246,51 @@ body {
   cursor: not-allowed;
 }
 
+/* Animations */
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 /* Responsive styles for mobile */
-@media (max-width: 768px) {
+@media (max-width: 968px) {
   .container {
-    flex-direction: column; /* Stack sidebar and main for mobile */
+    flex-direction: column;
   }
 
-  .sidebar {
-    width: 100%; /* Full width on mobile */
-    padding: 1.5rem;
+  .left-section {
+    width: 100%;
+    padding: clamp(2rem, 4vw, 3rem);
+    min-height: 40vh;
   }
 
-  .sidebar h1 {
-    font-size: 1.875rem;
+  .left-content {
+    max-width: 100%;
   }
 
-  .sidebar p {
-    font-size: 0.9375rem;
+  .right-section {
+    width: 100%;
+    padding: clamp(1.5rem, 3vw, 2rem);
   }
 
-  .main {
-    padding: 1.5rem;
-  }
-
-  .form {
-    max-width: 100%; /* Allow form to take full width on mobile */
+  .form-container {
+    max-width: 100%;
   }
 }

@@ -15,7 +15,8 @@ const ResumeBuilder = () => {
       backgroundColor: isDark ? "#000000" : "#ffffff",
       color: isDark ? "#ffffff" : "#000000",
       fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', 'Roboto', sans-serif",
-      overflow: "hidden",
+      overflowX: "visible",
+      overflowY: "hidden",
     },
     header: {
       display: "flex",
@@ -66,7 +67,7 @@ const ResumeBuilder = () => {
       margin: "0 auto",
       width: "100%",
       minHeight: 0,
-      overflow: "hidden",
+      overflow: "visible",
     },
     leftSection: {
       display: "flex",
@@ -157,31 +158,34 @@ const ResumeBuilder = () => {
     rightSection: {
       display: "flex",
       alignItems: "center",
-      justifyContent: "center",
+      justifyContent: "flex-start",
       animation: "fadeInRight 0.8s ease-out",
       minHeight: 0,
-      overflow: "hidden",
+      overflow: "visible",
+      position: "relative",
     },
     imageContainer: {
       width: "100%",
-      maxWidth: "100%",
-      maxHeight: "100%",
+      maxWidth: "none",
+      maxHeight: "calc(100vh - 80px)",
       borderRadius: "10px",
-      overflow: "hidden",
+      overflow: "visible",
       boxShadow: isDark 
         ? "0 20px 60px rgba(255,255,255,0.1)" 
         : "0 20px 60px rgba(0,0,0,0.15)",
       display: "flex",
       alignItems: "center",
-      justifyContent: "center",
+      justifyContent: "flex-start",
+      position: "relative",
     },
     image: {
-      width: "100%",
+      width: "125%",
       height: "auto",
-      maxHeight: "calc(100vh - 90px)",
+      maxHeight: "calc(100vh - 80px)",
       display: "block",
       objectFit: "contain",
-      transform: "scale(1.15)",
+      transform: "scale(1.3)",
+      transformOrigin: "left center",
     },
   };
 
