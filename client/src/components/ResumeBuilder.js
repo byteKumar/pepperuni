@@ -45,13 +45,13 @@ const ResumeBuilder = () => {
   };
 
   const titleStyle = {
-    fontSize: "3rem",
+    fontSize: "2.75rem",
     fontWeight: "bold",
     margin: 0,
   };
 
   const subtitleStyle = {
-    fontSize: "1rem",
+    fontSize: "0.9375rem",
     fontWeight: "normal",
     marginTop: "0.5rem",
     color: isDark ? "var(--text-secondary)" : "#bdbdbd",

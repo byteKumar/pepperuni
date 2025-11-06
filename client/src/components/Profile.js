@@ -230,7 +230,7 @@ const Profile = () => {
       width: "calc(100% - clamp(0px, 280px, 280px))",
     },
     title: {
-      fontSize: "clamp(1.75rem, 4vw, 2rem)",
+      fontSize: "clamp(1.5rem, 3.5vw, 1.875rem)",
       fontWeight: "700",
       marginBottom: "clamp(1.5rem, 3vw, 2rem)",
       color: isDark ? "var(--text-primary)" : "var(--text-primary)",
@@ -246,7 +246,7 @@ const Profile = () => {
       transition: "all 0.3s ease",
     },
     sectionTitle: {
-      fontSize: "clamp(1.25rem, 3vw, 1.5rem)",
+      fontSize: "clamp(1.125rem, 2.75vw, 1.375rem)",
       fontWeight: "600",
       marginBottom: "clamp(1.5rem, 3vw, 2rem)",
       color: isDark ? "var(--text-primary)" : "var(--text-primary)",
@@ -261,7 +261,7 @@ const Profile = () => {
       display: "flex",
       alignItems: "center",
       gap: "0.625rem",
-      fontSize: "0.875rem",
+      fontSize: "0.8125rem",
       fontWeight: "600",
       color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
       marginBottom: "0.75rem",
@@ -271,7 +271,7 @@ const Profile = () => {
       padding: "clamp(0.875rem, 2vw, 1rem)",
       border: `1px solid ${isDark ? "var(--border-color)" : "#ddd"}`,
       borderRadius: "8px",
-      fontSize: "clamp(0.9375rem, 2vw, 1rem)",
+      fontSize: "clamp(0.875rem, 1.75vw, 0.9375rem)",
       backgroundColor: isDark ? "var(--bg-tertiary)" : "#ffffff",
       color: isDark ? "var(--text-primary)" : "var(--text-primary)",
       transition: "all 0.2s ease",
@@ -293,7 +293,7 @@ const Profile = () => {
       border: "none",
       borderRadius: "8px",
       cursor: "pointer",
-      fontSize: "clamp(0.9375rem, 2vw, 1rem)",
+      fontSize: "clamp(0.875rem, 1.75vw, 0.9375rem)",
       fontWeight: "600",
       display: "flex",
       alignItems: "center",
@@ -331,7 +331,7 @@ const Profile = () => {
       gap: "0.625rem",
       marginBottom: "0.75rem",
       color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
-      fontSize: "0.9375rem",
+      fontSize: "0.875rem",
     },
     editButton: {
       marginLeft: "auto",
@@ -375,6 +375,18 @@ const Profile = () => {
               <button
                 style={{ ...styles.button, ...styles.editButton }}
                 onClick={() => setIsEditing(true)}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = isDark 
+                    ? "0 4px 12px rgba(0,0,0,0.3)" 
+                    : "0 4px 12px rgba(0,0,0,0.1)";
+                  e.currentTarget.style.borderColor = isDark ? "rgba(255,255,255,0.2)" : "#999";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                  e.currentTarget.style.borderColor = isDark ? "var(--border-color)" : "#ddd";
+                }}
               >
                 <Edit2 size={16} />
                 Edit
@@ -483,6 +495,18 @@ const Profile = () => {
                 style={styles.button}
                 onClick={handleSaveProfile}
                 disabled={saving}
+                onMouseEnter={(e) => {
+                  if (!saving) {
+                    e.currentTarget.style.transform = "translateY(-2px) scale(1.02)";
+                    e.currentTarget.style.boxShadow = isDark 
+                      ? "0 6px 20px rgba(255,255,255,0.15)" 
+                      : "0 6px 20px rgba(0,0,0,0.2)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0) scale(1)";
+                  e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)";
+                }}
               >
                 <Save size={16} />
                 {saving ? "Saving..." : "Save Changes"}
@@ -502,6 +526,16 @@ const Profile = () => {
                       fetchProfile(user.id, token);
                     }
                   }
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = isDark 
+                    ? "0 6px 16px rgba(0,0,0,0.3)" 
+                    : "0 6px 16px rgba(0,0,0,0.15)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)";
                 }}
               >
                 Cancel
@@ -674,6 +708,18 @@ const Profile = () => {
               type="submit"
               style={styles.button}
               disabled={changingPassword}
+              onMouseEnter={(e) => {
+                if (!changingPassword) {
+                  e.currentTarget.style.transform = "translateY(-2px) scale(1.02)";
+                  e.currentTarget.style.boxShadow = isDark 
+                    ? "0 6px 20px rgba(255,255,255,0.15)" 
+                    : "0 6px 20px rgba(0,0,0,0.2)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0) scale(1)";
+                e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)";
+              }}
             >
               <Lock size={16} />
               {changingPassword ? "Changing Password..." : "Change Password"}

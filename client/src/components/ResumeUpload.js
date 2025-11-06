@@ -113,7 +113,7 @@ const ResumeUpload = () => {
       width: "calc(100% - clamp(0px, 280px, 280px))",
     },
     title: {
-      fontSize: "clamp(1.75rem, 4vw, 2.25rem)",
+      fontSize: "clamp(1.5rem, 3.5vw, 2rem)",
       fontWeight: "700",
       marginBottom: "clamp(1.5rem, 3vw, 2.5rem)",
       color: isDark ? "#ffffff" : "#1d1d1f",
@@ -153,7 +153,7 @@ const ResumeUpload = () => {
     },
     uploadText: {
       color: isDark ? "rgba(255,255,255,0.9)" : "#1d1d1f",
-      fontSize: "clamp(0.9375rem, 2vw, 1.0625rem)",
+      fontSize: "clamp(0.875rem, 1.75vw, 1rem)",
       lineHeight: "1.6",
       fontWeight: "500",
     },
@@ -177,7 +177,7 @@ const ResumeUpload = () => {
       transition: "all 0.3s ease",
     },
     formTitle: {
-      fontSize: "clamp(1.375rem, 3vw, 1.625rem)",
+      fontSize: "clamp(1.25rem, 2.75vw, 1.5rem)",
       fontWeight: "700",
       marginBottom: "clamp(1.5rem, 3vw, 2rem)",
       color: isDark ? "#ffffff" : "#1d1d1f",
@@ -189,7 +189,7 @@ const ResumeUpload = () => {
       gap: "0.75rem",
     },
     label: {
-      fontSize: "clamp(0.875rem, 2vw, 0.9375rem)",
+      fontSize: "clamp(0.8125rem, 1.75vw, 0.875rem)",
       fontWeight: "600",
       color: isDark ? "rgba(255,255,255,0.9)" : "#1d1d1f",
       marginBottom: "0.75rem",
@@ -199,7 +199,7 @@ const ResumeUpload = () => {
       padding: "clamp(0.875rem, 2vw, 1.125rem) clamp(1rem, 2vw, 1.25rem)",
       border: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "#e5e5e7"}`,
       borderRadius: "12px",
-      fontSize: "clamp(0.9375rem, 2vw, 1rem)",
+      fontSize: "clamp(0.875rem, 1.75vw, 0.9375rem)",
       backgroundColor: isDark ? "var(--bg-tertiary)" : "#ffffff",
       color: isDark ? "#ffffff" : "#1d1d1f",
       transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
@@ -214,7 +214,7 @@ const ResumeUpload = () => {
       padding: "clamp(0.875rem, 2vw, 1.125rem) clamp(1rem, 2vw, 1.25rem)",
       border: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "#e5e5e7"}`,
       borderRadius: "12px",
-      fontSize: "clamp(0.9375rem, 2vw, 1rem)",
+      fontSize: "clamp(0.875rem, 1.75vw, 0.9375rem)",
       minHeight: "clamp(150px, 20vh, 200px)",
       resize: "vertical",
       backgroundColor: isDark ? "var(--bg-tertiary)" : "#ffffff",
@@ -240,7 +240,7 @@ const ResumeUpload = () => {
       border: "none",
       borderRadius: "12px",
       cursor: loading ? "not-allowed" : "pointer",
-      fontSize: "clamp(0.9375rem, 2vw, 1rem)",
+      fontSize: "clamp(0.875rem, 1.75vw, 0.9375rem)",
       fontWeight: "600",
       transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
       display: "flex",
@@ -254,7 +254,7 @@ const ResumeUpload = () => {
       boxShadow: isDark ? "0 6px 24px rgba(255,255,255,0.15)" : "0 6px 24px rgba(0,0,0,0.2)",
     },
     loadingText: {
-      fontSize: "1.25rem",
+      fontSize: "1.125rem",
       fontWeight: "600",
       color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
       textAlign: "center",
@@ -310,14 +310,14 @@ const ResumeUpload = () => {
       animation: "pulse 2s ease-in-out infinite",
     },
     loaderTitle: {
-      fontSize: "clamp(1.5rem, 3vw, 2rem)",
+      fontSize: "clamp(1.375rem, 2.75vw, 1.875rem)",
       fontWeight: "700",
       color: isDark ? "#ffffff" : "#1d1d1f",
       marginBottom: "0.5rem",
       letterSpacing: "-0.02em",
     },
     loaderSubtitle: {
-      fontSize: "clamp(1rem, 2vw, 1.125rem)",
+      fontSize: "clamp(0.9375rem, 1.75vw, 1rem)",
       color: isDark ? "rgba(255, 255, 255, 0.7)" : "rgba(29, 29, 31, 0.7)",
       fontWeight: "500",
       lineHeight: "1.6",
@@ -355,7 +355,7 @@ const ResumeUpload = () => {
       transform: "scale(1.2)",
     },
     progressText: {
-      fontSize: "0.9375rem",
+      fontSize: "0.8125rem",
       color: isDark ? "rgba(255, 255, 255, 0.7)" : "rgba(29, 29, 31, 0.7)",
       fontWeight: "500",
     },
@@ -369,7 +369,7 @@ const ResumeUpload = () => {
       backgroundColor: isDark ? "var(--bg-tertiary)" : "#f0f0f0",
       borderRadius: "8px",
       color: isDark ? "var(--text-primary)" : "var(--text-primary)",
-      fontSize: "0.875rem",
+      fontSize: "0.8125rem",
     },
   };
 
@@ -485,7 +485,7 @@ const ResumeUpload = () => {
               <br />
               <span
                 style={{
-                  fontSize: "0.875rem",
+                  fontSize: "0.8125rem",
                   color: isDark ? "var(--text-tertiary)" : "#888",
                   marginTop: "0.5rem",
                   display: "block",

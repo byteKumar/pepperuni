@@ -179,14 +179,14 @@ const ResumeList = () => {
       width: "calc(100% - clamp(0px, 280px, 280px))",
     },
     title: {
-      fontSize: "clamp(1.75rem, 4vw, 2rem)",
+      fontSize: "clamp(1.5rem, 3.5vw, 1.875rem)",
       fontWeight: "700",
       marginBottom: "0.5rem",
       color: isDark ? "var(--text-primary)" : "var(--text-primary)",
       letterSpacing: "-0.5px",
     },
     subtitle: {
-      fontSize: "clamp(1rem, 2.5vw, 1.0625rem)",
+      fontSize: "clamp(0.9375rem, 2.25vw, 1rem)",
       color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
       marginBottom: "clamp(1.5rem, 3vw, 2.5rem)",
     },
@@ -234,7 +234,7 @@ const ResumeList = () => {
       marginBottom: "1.25rem",
     },
     resumeTitle: {
-      fontSize: "clamp(1.125rem, 2.5vw, 1.25rem)",
+      fontSize: "clamp(1rem, 2.25vw, 1.125rem)",
       fontWeight: "600",
       color: isDark ? "var(--text-primary)" : "var(--text-primary)",
       margin: 0,
@@ -246,7 +246,7 @@ const ResumeList = () => {
       borderRadius: "24px",
       color: "white",
       fontWeight: "600",
-      fontSize: "clamp(0.8125rem, 1.5vw, 0.875rem)",
+      fontSize: "clamp(0.75rem, 1.375vw, 0.8125rem)",
       display: "flex",
       alignItems: "center",
       gap: "0.375rem",
@@ -263,11 +263,11 @@ const ResumeList = () => {
       alignItems: "center",
       gap: "0.625rem",
       color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
-      fontSize: "0.875rem",
+      fontSize: "0.8125rem",
     },
     resumePreview: {
       color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)",
-      fontSize: "0.875rem",
+      fontSize: "0.8125rem",
       lineHeight: "1.6",
       maxHeight: "120px",
       overflow: "hidden",
@@ -286,7 +286,7 @@ const ResumeList = () => {
       border: "none",
       borderRadius: "8px",
       cursor: "pointer",
-      fontSize: "clamp(0.8125rem, 1.5vw, 0.875rem)",
+      fontSize: "clamp(0.75rem, 1.375vw, 0.8125rem)",
       fontWeight: "600",
       display: "flex",
       alignItems: "center",
@@ -311,7 +311,7 @@ const ResumeList = () => {
 
         {loading ? (
           <div style={styles.loadingContainer}>
-            <p style={{ color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)", fontSize: "1.125rem" }}>
+            <p style={{ color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)", fontSize: "1rem" }}>
               Loading resumes...
             </p>
           </div>
@@ -322,10 +322,10 @@ const ResumeList = () => {
         ) : resumes.length === 0 ? (
           <div style={styles.emptyState}>
             <FileText size={80} style={{ marginBottom: "1.5rem", color: isDark ? "var(--text-tertiary)" : "#ccc", opacity: 0.5 }} />
-            <h2 style={{ color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)", marginBottom: "0.75rem", fontSize: "1.5rem" }}>
+            <h2 style={{ color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)", marginBottom: "0.75rem", fontSize: "1.375rem" }}>
               No resumes yet
             </h2>
-            <p style={{ color: isDark ? "var(--text-tertiary)" : "#999", marginBottom: "2rem", fontSize: "1rem" }}>
+            <p style={{ color: isDark ? "var(--text-tertiary)" : "#999", marginBottom: "2rem", fontSize: "0.9375rem" }}>
               Start by uploading and tailoring your first resume!
             </p>
             <button
@@ -348,7 +348,7 @@ const ResumeList = () => {
           </div>
         ) : (
           <>
-            <div style={{ marginBottom: "1.5rem", color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)", fontSize: "1rem" }}>
+            <div style={{ marginBottom: "1.5rem", color: isDark ? "var(--text-secondary)" : "var(--text-tertiary)", fontSize: "0.9375rem" }}>
               Total Resumes: <strong style={{ color: isDark ? "var(--text-primary)" : "var(--text-primary)" }}>{resumes.length}</strong>
             </div>
             <div style={styles.resumeGrid}>

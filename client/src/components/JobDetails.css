@@ -33,6 +33,14 @@ body {
   color: white;
   font-size: 20px;
   cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.close-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
 }
 
 .menu-wrapper {
@@ -45,6 +53,14 @@ body {
   font-size: 24px;
   color: white;
   cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.menu-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
 }
 
 .dropdown-menu {
@@ -117,6 +133,7 @@ body {
   padding: 10px 20px;
   border-radius: 20px;
   cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 [data-theme="dark"] .browse-btn {
@@ -127,6 +144,15 @@ body {
 [data-theme="light"] .browse-btn {
   background-color: #00bcd4;
   color: white;
+}
+
+.browse-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .browse-btn:hover {
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
 }
 
 .browse-btn img {
@@ -168,6 +194,7 @@ form textarea {
   border: none;
   cursor: pointer;
   border-radius: 4px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .cancel-btn {
@@ -185,6 +212,16 @@ form textarea {
   color: #1d1d1f;
 }
 
+.cancel-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="dark"] .cancel-btn:hover {
+  background-color: #444;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
 .save-btn {
   background-color: #00bcd4;
   color: white;
@@ -198,6 +235,15 @@ form textarea {
 [data-theme="light"] .save-btn {
   background-color: #00bcd4;
   color: white;
+}
+
+.save-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .save-btn:hover {
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
 }
 
 .vertical-line {
